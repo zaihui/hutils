@@ -1,3 +1,4 @@
 pypandoc
 twine
 wheel
+bumpversion
