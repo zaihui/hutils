@@ -13,5 +13,5 @@ install:
   - pip install -r test-requirements.txt
 
 script:
-  - flake8 hutils
+  - flake8 hutils *.py
   - pytest

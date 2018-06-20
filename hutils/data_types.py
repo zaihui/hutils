@@ -23,7 +23,7 @@ def bytes_to_str(data):
     return [bytes_to_str(_) for _ in data]
 
 
-def get_data(data, *keys, optional=False):
+def get_data(data, optional=False, *keys):
     """ 从字典数据类型中批量获取变量。get list data from dict.
 
     Example:

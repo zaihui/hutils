@@ -6,7 +6,7 @@ from __future__ import absolute_import, unicode_literals
 import datetime
 
 
-def get_offset_and_limit(data, max_limit=None, default_offset=0, default_limit=20) -> (int, int):
+def get_offset_and_limit(data, max_limit=None, default_offset=0, default_limit=20):
     """ 从数据中获取偏移量和每页数量。get offset and limit from data.
 
     Example:
