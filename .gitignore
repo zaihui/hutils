@@ -4,7 +4,7 @@ MANIFEST
 
 *.pyc
 
-/.cache/
+/.*cache/
 /.idea/
 /build/
 /dist/
