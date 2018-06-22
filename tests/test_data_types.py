@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from hutils import data_types
+import hutils
 
 
 class TestDataTypes(unittest.TestCase):
@@ -17,5 +17,18 @@ class TestDataTypes(unittest.TestCase):
             }, True, ['a', 'c'], [1, None]),
         ]
         for data, optional, keys, expect in test_cases:
-            res = data_types.get_data(data, optional, *keys)
+            res = hutils.data_types.get_data(data, *keys, optional=optional)
             self.assertListEqual(list(res), expect)
+
+    def test_get_data_sample(self):
+        data = {
+            'offset': 0,
+            'limit': 20,
+            'from': 'yesterday',
+            'to': 'today'
+        }
+        offset, limit, begin, end = hutils.get_data(data, 'offset', 'limit', 'from', 'to')
+        self.assertEqual(offset, 0)
+        self.assertEqual(limit, 20)
+        self.assertEqual(begin, 'yesterday')
+        self.assertEqual(end, 'today')
