@@ -27,7 +27,7 @@ def get_data(data, optional=False, *keys):
     """ 从字典数据类型中批量获取变量。get list data from dict.
 
     Example:
-        offset, limit, from_date, to_date = get_data(request.data, 'offset', 'limit', 'from', 'to')
+        offset, limit, from_date, to_date = get_data(request.data, optional=False, 'offset', 'limit', 'from', 'to')
 
     :type data: dict
     :type keys: str
