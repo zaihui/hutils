@@ -23,7 +23,7 @@ class EmptyContextManager(object):
 class TupleEnum(Enum):
     """ 元组枚举类，可以用来存储多层信息。tuple enum for multi-dimension data enum.
 
-    Example:
+    Examples:
         class Genders(TupleEnum):
             UNKNOWN = 0, '未知'
             MALE = 1, '男性'

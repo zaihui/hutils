@@ -9,7 +9,7 @@ import datetime
 def get_offset_and_limit(data, max_limit=None, default_offset=0, default_limit=20):
     """ 从数据中获取偏移量和每页数量。get offset and limit from data.
 
-    Example:
+    Examples:
         offset, limit = get_offset_and_limit(request.data, max_limit=100)
 
     :type data: dict
@@ -18,8 +18,8 @@ def get_offset_and_limit(data, max_limit=None, default_offset=0, default_limit=2
     :type default_limit: int
     :rtype: (int, int)
     """
-    offset = data.get('offset', default_offset)
-    limit = data.get('limit', default_limit)
+    offset = int(data.get('offset', default_offset))
+    limit = int(data.get('limit', default_limit))
     if offset < 0 or limit < offset:
         raise ValueError('偏移量或每页数量低于限制，请重新选择')
     if max_limit and limit > max_limit:
@@ -30,7 +30,7 @@ def get_offset_and_limit(data, max_limit=None, default_offset=0, default_limit=2
 def get_start_and_end_time(data, max_delta_days=400, prefix='', is_datetime=True):
     """ 从数据中获取起止日期。get start and end time from data.
 
-    Example:
+    Examples:
         start, end = get_start_and_end_time(request.data, is_datetime=False)
 
     :type data: dict

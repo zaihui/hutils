@@ -7,7 +7,7 @@ from __future__ import absolute_import, unicode_literals
 def get_uid(instance):
     """ 获取实例的 uid (hex). get hex uid from instance.
 
-    Example:
+    Examples:
     Before:
         data = {
             'uid': instance.uid.hex if instance else None,

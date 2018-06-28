@@ -3,13 +3,20 @@
 # this module provides various data types operation
 from __future__ import absolute_import, unicode_literals
 
+import datetime
 import decimal
+import json
+
+try:
+    import bson
+except ImportError:
+    bson = False
 
 
 def bytes_to_str(data):
     """ 二进制类型转换为字符串，支持嵌套数组。bytes to string, supports nested list.
 
-    Example:
+    Examples:
         string_value = bytes_to_str(redis.get('key'))
     Or:
         values = bytes_to_str(redis.mget(*keys))
@@ -23,10 +30,38 @@ def bytes_to_str(data):
     return [bytes_to_str(_) for _ in data]
 
 
+def format_json(data, ensure_ascii=False, **kwargs):
+    """ 序列化 JSON，支持中文和 datetime, decimal 类型。format json with utf8/datetime/decimal support.
+
+    Examples:
+        data = format_json({'key': 'name', 'value': '强哥'})
+
+    :rtype: str
+    """
+
+    class HUtilsEncoder(json.JSONEncoder):
+        def default(self, o):
+            if isinstance(o, decimal.Decimal):
+                return str(o)
+            if bson and isinstance(o, bson.Decimal128):
+                return str(o.to_decimal())
+            if isinstance(o, datetime.datetime):
+                return o.strftime('%Y-%m-%d %H:%M:%S')
+            if isinstance(o, datetime.date):
+                return o.strftime('%Y-%m-%d')
+            return json.JSONEncoder.default(self, o)
+
+    kwargs.update(dict(
+        ensure_ascii=ensure_ascii,
+        cls=HUtilsEncoder,
+    ))
+    return json.dumps(data, **kwargs)
+
+
 def get_data(data, *keys, optional=False):
     """ 从字典数据类型中批量获取变量。get list data from dict.
 
-    Example:
+    Examples:
         offset, limit, from_date, to_date = get_data(request.data, 'offset', 'limit', 'from', 'to', optional=True)
 
     :type data: dict
@@ -41,7 +76,7 @@ def get_data(data, *keys, optional=False):
 def merge_dicts(*dicts):
     """ 依次合并多个字典。merge multiple dict one by one.
 
-    Example:
+    Examples:
         offset_limit_schema = {'offset': Validation(...), 'limit': Validation(...)}
         ...
         schema = merge_dicts(offset_limit_schema, from_to_schema, payment_schema)
@@ -58,7 +93,7 @@ def merge_dicts(*dicts):
 def quantize(value, rounding=decimal.ROUND_HALF_UP):
     """ 强制转换为两位小数类型。quantize value to two digits decimal.
 
-    Example:
+    Examples:
         price_list = [(5.25, 3.33), (6.98, 3.14)]
         sales_volume = sum(quantize(unit_price * amount) for unit_price, amount in price_list)
 
