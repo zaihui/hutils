@@ -51,10 +51,10 @@ def format_json(data, ensure_ascii=False, **kwargs):
                 return o.strftime('%Y-%m-%d')
             return json.JSONEncoder.default(self, o)
 
-    kwargs.update(dict(
+    kwargs.update(
         ensure_ascii=ensure_ascii,
         cls=HUtilsEncoder,
-    ))
+    )
     return json.dumps(data, **kwargs)
 
 
