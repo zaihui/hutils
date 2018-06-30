@@ -34,7 +34,9 @@ def format_json(data, ensure_ascii=False, **kwargs):
     """ 序列化 JSON，支持中文和 datetime, decimal 类型。format json with utf8/datetime/decimal support.
 
     Examples:
-        data = format_json({'key': 'name', 'value': '强哥'})
+        >>> format_json({'key': 'name', 'value': '强哥'})
+        '{"key": "name", "value": "强哥"}'
+
 
     :rtype: str
     """
