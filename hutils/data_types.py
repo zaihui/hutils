@@ -8,6 +8,7 @@ import decimal
 import json
 
 try:
+    import pymongo as _
     import bson
 except ImportError:
     bson = False
@@ -34,7 +35,9 @@ def format_json(data, ensure_ascii=False, **kwargs):
     """ 序列化 JSON，支持中文和 datetime, decimal 类型。format json with utf8/datetime/decimal support.
 
     Examples:
-        data = format_json({'key': 'name', 'value': '强哥'})
+        >>> format_json({'key': 'name', 'value': '强哥'})
+        '{"key": "name", "value": "强哥"}'
+
 
     :rtype: str
     """
@@ -51,10 +54,10 @@ def format_json(data, ensure_ascii=False, **kwargs):
                 return o.strftime('%Y-%m-%d')
             return json.JSONEncoder.default(self, o)
 
-    kwargs.update(dict(
+    kwargs.update(
         ensure_ascii=ensure_ascii,
         cls=HUtilsEncoder,
-    ))
+    )
     return json.dumps(data, **kwargs)
 
 
