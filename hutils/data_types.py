@@ -8,6 +8,7 @@ import decimal
 import json
 
 try:
+    import pymongo as _
     import bson
 except ImportError:
     bson = False

@@ -38,7 +38,7 @@ class TestDataTypes(unittest.TestCase):
         self.assertEqual(begin, 'yesterday')
         self.assertEqual(end, 'today')
 
-    def test_format_json(self):
+    def test_format_json_with_pymongo(self):
         test_date = datetime.date(2006, 1, 2)
         test_datetime = datetime.datetime(2006, 1, 2, 15, 4, 5)
         chinese = '强哥'
