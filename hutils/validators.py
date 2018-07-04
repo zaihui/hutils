@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+#
+# this module provides various validators
 import uuid
 
 
