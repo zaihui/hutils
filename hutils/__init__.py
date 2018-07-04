@@ -5,7 +5,7 @@ from .schemas import get_offset_and_limit, get_start_and_end_time
 from .shortcuts import datetime_combine, get_uid
 from .validators import is_uuid
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 __all__ = [
     'EmptyContextManager',
