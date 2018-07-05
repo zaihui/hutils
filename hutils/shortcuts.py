@@ -44,3 +44,21 @@ def get_uid(instance):
     :rtype: str | None
     """
     return instance.uid.hex if instance else None
+
+
+def list_get(instances, index, default=None):
+    """ 根据索引号获取列表值或者默认值。get default value on index out of range for list.
+
+    Examples:
+        >>> list_get([0, 1, 2], 3, 4)
+        4
+
+    Args:
+        instances (list): the list
+        index (int): the index
+        default: the default value
+    """
+    try:
+        return instances[index]
+    except IndexError:
+        return default
