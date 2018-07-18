@@ -25,6 +25,7 @@ def is_int(string):
     Returns: bool
     """
     try:
-        return bool(int(string) or True)
+        int(string)
+        return True
     except ValueError:
         return False
