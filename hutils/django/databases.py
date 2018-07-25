@@ -58,13 +58,12 @@ class DynamicField(object):
 
     def __setattr__(self, key, value):
         if key.startswith('_'):
-            super(DynamicField, self).__setattr__(key, value)
+            return super(DynamicField, self).__setattr__(key, value)
+        if value is None:  # None is default value, don't save
+            self._memory_data.pop(key, None)
         else:
-            if value is None:  # None is default value, don't save
-                self._memory_data.pop(key, None)
-            else:
-                self._memory_data[key] = value
-            self._set_model_field()
+            self._memory_data[key] = value
+        self._set_model_field()
 
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
