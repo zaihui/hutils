@@ -45,4 +45,4 @@ def is_chinese_phone(string):
 
     :rtype: bool
     """
-    return CHINESE_PHONE_REGEX.match(string)
+    return bool(CHINESE_PHONE_REGEX.match(string))
