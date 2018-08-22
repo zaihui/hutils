@@ -93,6 +93,23 @@ def merge_dicts(*dicts):
     return dict_merged
 
 
+def normalize(value):
+    """ 将一个数右边的零给干掉。remove trailing zeros from number.
+
+    Examples:
+        >>> normalize('80.00')
+        '80'
+        >>> normalize('12.30')
+        '12.3'
+        >>> normalize('6.66')
+        '6.66'
+
+    :rtype: str
+    """
+    str_value = str(value)
+    return str_value.rstrip('0').rstrip('.') if '.' in str_value else str_value
+
+
 def quantize(value, rounding=decimal.ROUND_HALF_UP):
     """ 强制转换为两位小数类型。quantize value to two digits decimal.
 
