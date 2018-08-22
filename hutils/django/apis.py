@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
 # this module provides django rest framework related methods
-from rest_framework.exceptions import ValidationError
 
 
 def get_validation_error(message, data=None, code=None):
@@ -15,9 +14,10 @@ def get_validation_error(message, data=None, code=None):
     Examples:
         >>> raise get_validation_error('非法的请求')
 
-    Returns:
-        ValidationError
+    :rtype: ValidationError
     """
+    from rest_framework.exceptions import ValidationError
+
     error = {'message': message}
     if data is not None:
         error['data'] = data
