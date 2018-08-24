@@ -46,6 +46,20 @@ def get_uid(instance):
     return instance.uid.hex if instance else None
 
 
+def list_first(instances, default=None):
+    """ 获取列表的第一个元素，假如没有第一个元素则返回默认值。get first value of a list or default value.
+
+    Examples:
+        >>> list_first(instances)
+        None
+
+    Args:
+        instances (list): the list
+        default: the default value
+    """
+    return list_get(instances, 0, default=default)
+
+
 def list_get(instances, index, default=None):
     """ 根据索引号获取列表值或者默认值。get default value on index out of range for list.
 
