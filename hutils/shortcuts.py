@@ -76,3 +76,28 @@ def list_get(instances, index, default=None):
         return instances[index]
     except IndexError:
         return default
+
+
+def mock_lambda(return_value=None, raises=None, **kwargs):
+    """ 伪造返回数据的快捷函数。convenient method to mock return value.
+
+    Examples:
+        >>> mock.patch('hutils.merge_dicts', mock_lambda(a=1, b=2))
+        >>> mock.patch('hutils.merge_dicts', mock_lambda(raises=ValueError))
+
+    Args:
+        return_value: the return value
+        raises: the exception to raise
+        kwargs: a shortcut for define dictionary return value
+    """
+
+    def func(*_, **__):
+        if raises is not None:
+            raise raises
+        if return_value is not None:
+            if isinstance(return_value, dict):
+                return return_value.copy()
+            return return_value
+        return kwargs.copy()
+
+    return func
