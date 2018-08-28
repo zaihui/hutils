@@ -88,9 +88,20 @@ class DynamicField(object):
 
     @classmethod
     def make_property(cls, field_name, property_name, type_wrapper=None, default=None):
+        """
+        :type field_name: str
+        :type property_name: str
+        :type type_wrapper: (...) -> T
+        :type default: T
+        :rtype: T
+        """
+
         def _wrap(value):
             if type_wrapper is not None:
-                value = type_wrapper(value)
+                if value is not None:
+                    value = type_wrapper(value)
+                else:
+                    value = type_wrapper()
             return value
 
         return property(
