@@ -111,3 +111,37 @@ class DynamicField(object):
             lambda obj: _wrap(getattr(getattr(obj, field_name), property_name, default)),
             lambda obj, value: setattr(getattr(obj, field_name), property_name, _wrap(value)),
         )
+
+
+class ModelMixin(object):
+    """ 集合了一些 Model 的方法。collects some model helper methods.
+
+    Examples:
+        >>> class User(models.Model, ModelMixin):
+        >>>     name = models.CharField()
+        >>>     age = models.IntegerField()
+        >>> User.increase(age=1)
+        >>> User.modify(name='kevin')
+    """
+
+    def modify(self, extra_updates=(), refresh=False, **fields):
+        """ 只修改指定域。specify fields to update.
+
+        Examples:
+            >>> user.modify(age=18, extra_updates=('first_name', 'last_name'))
+        """
+        for field, value in fields.items():
+            setattr(self, field, value)
+        update_fields = list(extra_updates) + list(fields.keys())
+        self.save(update_fields=update_fields)
+        if refresh:
+            self.refresh_from_db(fields=update_fields)
+
+    def increase(self, extra_updates=(), **fields):
+        """ 利用 F() 来修改指定域。increase fields value using F().
+
+        Examples:
+            >>> user.increase(points=10)
+        """
+        fields = {field: models.F(field) + amount for field, amount in fields.items()}
+        self.modify(extra_updates=extra_updates, refresh=True, **fields)
