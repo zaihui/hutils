@@ -3,10 +3,11 @@
 # this module provides various schema operations
 from __future__ import absolute_import, unicode_literals
 
+import contextlib
 from enum import Enum
 
 
-class EmptyContextManager(object):
+class EmptyContextManager(contextlib.ContextDecorator):
     """ empty context manager. """
 
     def __init__(self):

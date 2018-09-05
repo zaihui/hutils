@@ -22,7 +22,10 @@ def flat_transaction(using=None, savepoint=True):
     """
     connection = transaction.get_connection()
     if connection.in_atomic_block:
-        return hutils.EmptyContextManager()
+        context_manager = hutils.EmptyContextManager()
+        if callable(using):
+            context_manager = context_manager(using)
+        return context_manager
     else:
         return transaction.atomic(using, savepoint)
 
