@@ -4,11 +4,12 @@ MANIFEST
 
 *.pyc
 
-/.*cache/
-/.idea/
-/build/
-/dist/
-/env/
+.*cache/
+.idea/
+_build/
+build/
+dist/
+env/
 
 *.egg-info/
 
