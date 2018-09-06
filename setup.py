@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
-import pypandoc
-from setuptools import setup
+from setuptools import find_packages, setup
 
 import hutils
+
+with open('README.md', 'r', encoding='utf-8') as f:
+    description = f.read()
 
 setup(
     name='hutils',
     version=hutils.__version__,
     description='a charming python web util-library',
-    long_description=pypandoc.convert('README.md', 'rst'),
+    long_description=description,
     author='ZaiHui Dev',
     author_email='llk@kezaihui.com',
     url='https://github.com/zaihui/hutils/',
     license='MIT License',
     install_requires=open('requirements.txt').readlines(),
-    packages=['hutils'],
+    packages=find_packages(exclude=['tests']),
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',

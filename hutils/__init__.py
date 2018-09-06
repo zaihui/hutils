@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from . import django
 from .classes import EmptyContextManager, TupleEnum
 from .data_types import bytes_to_str, format_json, get_data, merge_dicts, normalize, quantize
 from .schemas import get_offset_and_limit, get_start_and_end_time
@@ -8,6 +9,7 @@ from .validators import is_chinese_phone, is_int, is_uuid
 __version__ = '0.1.4'
 
 __all__ = [
+    'django',
     'EmptyContextManager',
     'TupleEnum',
     'bytes_to_str',
