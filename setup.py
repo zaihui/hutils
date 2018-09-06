@@ -11,6 +11,7 @@ setup(
     version=hutils.__version__,
     description='a charming python web util-library',
     long_description=description,
+    long_description_content_type='text/markdown',
     author='ZaiHui Dev',
     author_email='llk@kezaihui.com',
     url='https://github.com/zaihui/hutils/',
