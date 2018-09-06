@@ -3,22 +3,19 @@
 # this module provides django database related methods
 import json
 
-from django.db import models, transaction  # NOQA
+from django.db import models, transaction
 
 import hutils
 
 
-def flat_transaction(using=None, savepoint=True):
+def flat_transaction(using: str = None, savepoint: bool = True):
     """ 不嵌套的事务。not nested django transaction
 
-    Args:
-        using (str): database section
-        savepoint (bool): if use savepoint
+    Examples::
 
-    Examples:
-        >>> with flat_transaction():
-        >>>     with flat_transaction():
-        >>>         ...
+        with flat_transaction():
+            with flat_transaction():
+                ...
     """
     connection = transaction.get_connection()
     if connection.in_atomic_block:
@@ -32,19 +29,20 @@ def flat_transaction(using=None, savepoint=True):
 
 class DynamicField(object):
     """ 动态域，伪 JSONField。a replacement for JSONField.
-    Examples:
-        >>> class User(models.Model):
-        >>>     json_data = models.CharField(max_length=1023, default='{}')
-        >>>     data = DynamicField.make_field('json_data')
-        >>>     is_developer = DynamicField.make_property('data', 'is_developer', bool, False)
-        >>>     editor = DynamicField.make_property('data', 'editor', str, 'vim')
+
+    Examples::
+
+        class User(models.Model):
+            json_data = models.CharField(max_length=1023, default='{}')
+            data = DynamicField.make_field('json_data')
+            is_developer = DynamicField.make_property('data', 'is_developer', bool, False)
+            editor = DynamicField.make_property('data', 'editor', str, 'vim')
     """
 
-    def __init__(self, model, field):
+    def __init__(self, model: models.Model, field: str):
         """
-        Args:
-            model (models.Model): the django model
-            field (str): the database field name to store json data
+        :param model: the django model
+        :param field: the database field name to store json data
         """
         self._memory_data = {}  # in-memory json data
         self._model = model
@@ -116,19 +114,21 @@ class DynamicField(object):
 class ModelMixin(object):
     """ 集合了一些 Model 的方法。collects some model helper methods.
 
-    Examples:
-        >>> class User(models.Model, ModelMixin):
-        >>>     name = models.CharField()
-        >>>     age = models.IntegerField()
-        >>> User.increase(age=1)
-        >>> User.modify(name='kevin')
+    Examples::
+
+        class User(models.Model, ModelMixin):
+            name = models.CharField()
+            age = models.IntegerField()
+        User.increase(age=1)
+        User.modify(name='kevin')
     """
 
     def modify(self, extra_updates=(), refresh=False, **fields):
         """ 只修改指定域。specify fields to update.
 
-        Examples:
-            >>> user.modify(age=18, extra_updates=('first_name', 'last_name'))
+        Examples::
+
+            user.modify(age=18, extra_updates=('first_name', 'last_name'))
         """
         for field, value in fields.items():
             setattr(self, field, value)
@@ -140,8 +140,9 @@ class ModelMixin(object):
     def increase(self, extra_updates=(), **fields):
         """ 利用 F() 来修改指定域。increase fields value using F().
 
-        Examples:
-            >>> user.increase(points=10)
+        Examples::
+
+            user.increase(points=10)
         """
         fields = {field: models.F(field) + amount for field, amount in fields.items()}
         self.modify(extra_updates=extra_updates, refresh=True, **fields)

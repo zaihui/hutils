@@ -4,7 +4,10 @@
 from __future__ import absolute_import, unicode_literals
 
 import contextlib
-from enum import Enum
+import enum
+from typing import List, Tuple
+
+from hutils.shortcuts import list_get
 
 
 class EmptyContextManager(contextlib.ContextDecorator):
@@ -21,10 +24,11 @@ class EmptyContextManager(contextlib.ContextDecorator):
         return False
 
 
-class TupleEnum(Enum):
+class TupleEnum(enum.Enum):
     """ 元组枚举类，可以用来存储多层信息。tuple enum for multi-dimension data enum.
 
-    Examples:
+    Examples::
+
         class Genders(TupleEnum):
             UNKNOWN = 0, '未知'
             MALE = 1, '男性'
@@ -37,16 +41,20 @@ class TupleEnum(Enum):
     def __new__(cls, value, *args):
         obj = object.__new__(cls)
         obj._value_ = value
-        obj.values = [value] + list(args)
+        obj.obj_values = [value] + list(args)
         return obj
 
-    def get_value_at(self, index):
-        return self.values[index]
+    def get_value_at(self, index, default=None):
+        return list_get(self.obj_values, index, default=default)
 
     @property
     def chinese(self):
         return self.get_value_at(1)
 
     @classmethod
-    def chinese_choices(cls):
+    def chinese_choices(cls) -> List[Tuple]:
         return [(_.value, _.chinese) for _ in cls]
+
+    @classmethod
+    def values(cls) -> Tuple:
+        return tuple(_.value for _ in cls)

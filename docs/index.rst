@@ -3,18 +3,106 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to hutils's documentation!
-==================================
+HUtils, a charming util-library
+===============================
+
+本项目包含了一些 Web 后端项目中比较好用的基类函数，
+包括了类型转换、入参获取、验证函数和各种方便的小工具函数。
+
+具体的方法请参见下方详情。
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+.. module:: hutils
 
 
-Indices and tables
-==================
+Classes
+-------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+Tuple Enum
+^^^^^^^^^^
+
+.. autoclass:: TupleEnum
+   :members:
+
+
+Data Types
+----------
+
+Bytes to String
+^^^^^^^^^^^^^^^
+.. autofunction:: bytes_to_str
+
+Format JSON
+^^^^^^^^^^^
+.. autofunction:: format_json
+
+Get Dict Data
+^^^^^^^^^^^^^
+.. autofunction:: get_data
+
+Merge Dicts
+^^^^^^^^^^^
+.. autofunction:: merge_dicts
+
+Normalize Decimal
+^^^^^^^^^^^^^^^^^
+.. autofunction:: normalize
+
+Quantize Decimal
+^^^^^^^^^^^^^^^^
+.. autofunction:: quantize
+
+
+Schemas
+-------
+
+Get Offset/Limit
+^^^^^^^^^^^^^^^^
+.. autofunction:: get_offset_and_limit
+
+Get Start/End Time
+^^^^^^^^^^^^^^^^^^
+.. autofunction:: get_start_and_end_time
+
+
+Shortcuts
+---------
+
+Combine Datetime
+^^^^^^^^^^^^^^^^
+.. autofunction:: datetime_combine
+
+Get UID
+^^^^^^^
+.. autofunction:: get_uid
+
+Get First of List
+^^^^^^^^^^^^^^^^^
+.. autofunction:: list_first
+
+Get Index of List
+^^^^^^^^^^^^^^^^^
+.. autofunction:: list_get
+
+Mock Lambda
+^^^^^^^^^^^
+.. autofunction:: mock_lambda
+
+
+Validators
+----------
+
+Validate Chinese Phone
+^^^^^^^^^^^^^^^^^^^^^^
+.. autofunction:: is_chinese_phone
+
+Validate Integer
+^^^^^^^^^^^^^^^^
+.. autofunction:: is_int
+
+Validate UUID
+^^^^^^^^^^^^^
+.. autofunction:: is_uuid
