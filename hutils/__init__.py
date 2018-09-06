@@ -9,7 +9,6 @@ from .validators import is_chinese_phone, is_int, is_uuid
 __version__ = '0.1.5'
 
 __all__ = [
-    'django',
     'EmptyContextManager',
     'TupleEnum',
     'bytes_to_str',
@@ -29,3 +28,10 @@ __all__ = [
     'is_int',
     'is_uuid',
 ]
+
+try:
+    import django
+
+    __all__.append('django')
+except ImportError:
+    pass

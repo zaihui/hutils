@@ -11,11 +11,12 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
 
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath('..'))
+import hutils
 
 # -- Project information -----------------------------------------------------
 
@@ -24,10 +25,9 @@ copyright = '2018, ZaiHui Dev'
 author = 'ZaiHui Dev'
 
 # The short X.Y version
-version = ''
+version = hutils.__version__
 # The full version, including alpha/beta/rc tags
-release = '0.1.5'
-
+release = hutils.__version__
 
 # -- General configuration ---------------------------------------------------
 
@@ -71,7 +71,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -106,7 +105,6 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'hutilsdoc'
 
-
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = {
@@ -132,9 +130,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'hutils.tex', 'hutils Documentation',
-     'ZaiHui Dev', 'manual'),
+    'ZaiHui Dev', 'manual'),
 ]
-
 
 # -- Options for manual page output ------------------------------------------
 
@@ -142,9 +139,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'hutils', 'hutils Documentation',
-     [author], 1)
+    [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -153,10 +149,9 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'hutils', 'hutils Documentation',
-     author, 'hutils', 'One line description of project.',
-     'Miscellaneous'),
+    author, 'hutils', 'One line description of project.',
+    'Miscellaneous'),
 ]
-
 
 # -- Extension configuration -------------------------------------------------
 
