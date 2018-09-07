@@ -3,8 +3,6 @@
 # this module provides django rest framework related methods
 from django.db import models
 
-from hutils.shortcuts import list_first
-
 
 def get_validation_error(message: str, data=None, code=None):
     """ 方便快捷抛 400 的函数。shortcut for raising bad request error in django-rest-framework.
@@ -40,8 +38,8 @@ def get_object_or_not_found(
     :type _err_msg: str
     :rtype: T
     """
-    manager = list_first(queries)
-    if not isinstance(manager, models.Manager):
+    manager = cls
+    if not isinstance(cls, models.Manager):
         manager = cls.objects
     try:
         result = manager.filter(*queries).select_related(*_select_models).prefetch_related(*_prefetch_models) \
