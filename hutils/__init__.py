@@ -31,6 +31,6 @@ __all__ = [
 try:
     from . import django  # NOQA
 
-    __all__.append('django')
+    __all__.extend(django.__all__)
 except ImportError:
     pass
