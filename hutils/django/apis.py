@@ -23,12 +23,12 @@ def get_validation_error(message: str, data=None, code=None):
     return ValidationError(error)
 
 
-def get_object_or_not_found(
+def get_object_or_error(
         cls, *queries, _select_models=(), _prefetch_models=(), _err_msg=None, _err_func=get_validation_error, **kwargs):
     """ 类似 get_object_or_404。similar to get_object_or_404.
 
     Examples::
-        user = get_object_or_not_found(User, uid=uid)
+        user = get_object_or_error(User, uid=uid)
 
     :type cls: (() -> T) | T
     :type queries: django.db.models.query_utils.Q
