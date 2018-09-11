@@ -110,8 +110,8 @@ def normalize(value):
     return str_value.rstrip('0').rstrip('.') if '.' in str_value else str_value
 
 
-def quantize(value, rounding=decimal.ROUND_HALF_UP):
-    """ 强制转换为两位小数类型。quantize value to two digits decimal.
+def quantize(value, exp_str='.01', rounding=decimal.ROUND_HALF_UP):
+    """ 强制转换为指定位数（默认两位）小数类型。quantize value to designated (two) digits decimal.
 
     Examples::
 
@@ -120,4 +120,4 @@ def quantize(value, rounding=decimal.ROUND_HALF_UP):
 
     :rtype: decimal.Decimal
     """
-    return decimal.Decimal(value).quantize(decimal.Decimal('.01'), rounding=rounding)
+    return decimal.Decimal(value).quantize(decimal.Decimal(exp_str), rounding=rounding)
