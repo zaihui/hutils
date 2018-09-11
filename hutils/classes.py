@@ -51,6 +51,11 @@ class TupleEnum(enum.Enum):
     def chinese(self):
         return self.get_value_at(1)
 
+    @property
+    def lower_name(self):
+        """ name in lower case """
+        return self.name.lower()
+
     @classmethod
     def chinese_choices(cls) -> List[Tuple]:
         return [(_.value, _.chinese) for _ in cls]
@@ -58,3 +63,11 @@ class TupleEnum(enum.Enum):
     @classmethod
     def values(cls) -> Tuple:
         return tuple(_.value for _ in cls)
+
+    @classmethod
+    def from_lower(cls, lower_name):
+        upper_name = lower_name.upper()
+        for value in cls:
+            if value.name == upper_name:
+                return value
+        raise ValueError('{!r} is not a valid {}'.format(upper_name, cls.__name__))
