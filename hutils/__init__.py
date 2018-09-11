@@ -6,6 +6,7 @@ from .shortcuts import (
     date_to_str, datetime_combine, datetime_to_str, get_uid, list_first, list_get, mock_lambda,
     str_to_date, str_to_datetime,
 )
+from .storages import obj_cache
 from .validators import is_chinese_phone, is_int, is_uuid
 
 __version__ = '0.3.2'
@@ -30,6 +31,7 @@ __all__ = [
     'mock_lambda',
     'str_to_date',
     'str_to_datetime',
+    'obj_cache',
     'is_chinese_phone',
     'is_int',
     'is_uuid',
