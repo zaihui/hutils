@@ -22,6 +22,26 @@ def datetime_combine(
     )
 
 
+def datetime_to_str(value, fmt='%Y-%m-%d %H:%M:%S'):
+    """ 时间类型转换为字符串。datetime to string.
+
+    :type value: datetime.datetime
+    :type fmt: str
+    :rtype: str
+    """
+    return value.strftime(fmt)
+
+
+def date_to_str(value, fmt='%Y-%m-%d'):
+    """ 日期类型转换为字符串。date to string.
+
+    :type value: datetime.date
+    :type fmt: str
+    :rtype: str
+    """
+    return value.strftime(fmt)
+
+
 def get_uid(instance):
     """ 获取实例的 uid (hex). get hex uid from instance.
 
@@ -86,3 +106,23 @@ def mock_lambda(return_value=None, raises: Type[Exception] = None, **kwargs):
         return kwargs.copy()
 
     return func
+
+
+def str_to_datetime(value, fmt='%Y-%m-%d %H:%M:%S'):
+    """ 时间类型转换为字符串。datetime to string.
+
+    :type value: str
+    :type fmt: str
+    :rtype: datetime.datetime
+    """
+    return datetime.datetime.strptime(value, fmt)
+
+
+def str_to_date(value, fmt='%Y-%m-%d'):
+    """ 日期类型转换为字符串。date to string.
+
+    :type value: str
+    :type fmt: str
+    :rtype: datetime.date
+    """
+    return datetime.datetime.strptime(value, fmt).date()

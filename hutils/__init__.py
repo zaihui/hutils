@@ -2,7 +2,10 @@
 from .classes import EmptyContextManager, TupleEnum
 from .data_types import bytes_to_str, format_json, get_data, merge_dicts, normalize, quantize
 from .schemas import get_offset_and_limit, get_start_and_end_time
-from .shortcuts import datetime_combine, get_uid, list_first, list_get, mock_lambda
+from .shortcuts import (
+    date_to_str, datetime_combine, datetime_to_str, get_uid, list_first, list_get, mock_lambda,
+    str_to_date, str_to_datetime,
+)
 from .validators import is_chinese_phone, is_int, is_uuid
 
 __version__ = '0.3.1'
@@ -18,11 +21,15 @@ __all__ = [
     'quantize',
     'get_offset_and_limit',
     'get_start_and_end_time',
+    'date_to_str',
     'datetime_combine',
+    'datetime_to_str',
     'get_uid',
     'list_first',
     'list_get',
     'mock_lambda',
+    'str_to_date',
+    'str_to_datetime',
     'is_chinese_phone',
     'is_int',
     'is_uuid',
