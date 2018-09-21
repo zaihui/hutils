@@ -3,7 +3,7 @@ import contextlib
 import functools
 from typing import Callable, Union
 
-from hutils import log_error
+from hutils.shortcuts import log_error
 
 
 def obj_cache(key):
