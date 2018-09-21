@@ -4,6 +4,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import datetime
+import logging
 from typing import Iterable, Optional, Tuple, Type
 
 
@@ -115,6 +116,23 @@ def mock_lambda(return_value=None, raises: Type[Exception] = None, **kwargs):
         return kwargs.copy()
 
     return func
+
+
+def log_error(logger, message, *args):
+    """ 记录错误日志的快捷方式，顺带支持 Sentry。log error, supports sentry detail trace.
+
+    Examples::
+
+        log_error(logger, ex)
+        log_error(__name__, 'this message will show on sentry')
+    """
+    if isinstance(logger, str):
+        logger = logging.getLogger(logger)
+    if isinstance(message, Exception):
+        logger.exception(message, *args)
+    else:
+        # https://github.com/getsentry/raven-python/blob/master/docs/integrations/logging.rst#usage
+        logger.error(message, *args, extra={'stack': True})
 
 
 def str_to_datetime(value, fmt='%Y-%m-%d %H:%M:%S'):
