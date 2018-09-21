@@ -4,7 +4,7 @@
 from django.db import models
 
 
-def get_validation_error(message: str, data=None, code=None):
+def get_validation_error(message, data=None, code=None):
     """ 方便快捷抛 400 的函数。shortcut for raising bad request error in django-rest-framework.
 
     Examples::
@@ -15,7 +15,7 @@ def get_validation_error(message: str, data=None, code=None):
     """
     from rest_framework.exceptions import ValidationError
 
-    error = {'message': message}
+    error = {'message': str(message)}
     if data is not None:
         error['data'] = data
     if code is not None:
@@ -39,7 +39,7 @@ def get_object_or_error(
     :rtype: T
     """
     manager = cls
-    if not isinstance(cls, models.Manager):
+    if issubclass(cls, models.Model):
         manager = cls.objects
     try:
         result = manager.filter(*queries).select_related(*_select_models).prefetch_related(*_prefetch_models) \

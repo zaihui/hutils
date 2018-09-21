@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .classes import EmptyContextManager, TupleEnum
 from .data_types import bytes_to_str, format_json, get_data, merge_dicts, normalize, quantize
-from .decorators import obj_cache
+from .decorators import catches, obj_cache
 from .schemas import get_offset_and_limit, get_start_and_end_time
 from .shortcuts import (
     date_to_str, datetime_combine, datetime_to_str, get_uid, list_first, list_get, log_error, mock_lambda, str_to_date,
@@ -20,6 +20,7 @@ __all__ = [
     'merge_dicts',
     'normalize',
     'quantize',
+    'catches',
     'obj_cache',
     'get_offset_and_limit',
     'get_start_and_end_time',
