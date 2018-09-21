@@ -9,7 +9,7 @@ from .shortcuts import (
 )
 from .validators import is_chinese_phone, is_int, is_uuid
 
-__version__ = '0.3.3'
+__version__ = '0.3.4'
 
 __all__ = [
     'EmptyContextManager',
