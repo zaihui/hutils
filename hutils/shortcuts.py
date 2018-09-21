@@ -5,7 +5,7 @@ from __future__ import absolute_import, unicode_literals
 
 import datetime
 import logging
-from typing import Iterable, Optional, Tuple, Type
+from typing import Iterable, Optional, Tuple
 
 
 def datetime_combine(
@@ -97,13 +97,13 @@ def list_get(instances: Iterable, index: int, default=None):
         return default
 
 
-def mock_lambda(return_value=None, raises: Type[Exception] = None, **kwargs):
+def mock_lambda(return_value=None, raises: Exception = None, **kwargs):
     """ 伪造返回数据的快捷函数。convenient method to mock return value.
 
     Examples::
 
         mock.patch('hutils.merge_dicts', mock_lambda(a=1, b=2))
-        mock.patch('hutils.merge_dicts', mock_lambda(raises=ValueError))
+        mock.patch('hutils.merge_dicts', mock_lambda(raises=ValueError()))
     """
 
     def func(*_, **__):
