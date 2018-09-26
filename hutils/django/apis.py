@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # this module provides django rest framework related methods
+import inspect
+
 from django.db import models
 
 
@@ -39,7 +41,7 @@ def get_object_or_error(
     :rtype: T
     """
     manager = cls
-    if issubclass(cls, models.Model):
+    if inspect.isclass(cls) and issubclass(cls, models.Model):
         manager = cls.objects
     try:
         result = manager.filter(*queries).select_related(*_select_models).prefetch_related(*_prefetch_models) \
