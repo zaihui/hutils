@@ -40,16 +40,15 @@ def get_object_or_error(
     :type _err_msg: str
     :rtype: T
     """
-    manager = cls
     if inspect.isclass(cls) and issubclass(cls, models.Model):
         manager = cls.objects
-    if hasattr(cls, 'DoesNotExist'):
-        object_not_exist = cls.DoesNotExist
+        model = cls
     else:
-        object_not_exist = cls.model.DoesNotExist
+        manager = cls
+        model = cls.model
     try:
         result = manager.filter(*queries).select_related(*_select_models).prefetch_related(*_prefetch_models) \
             .get(**kwargs)
-    except (object_not_exist, ValueError):  # 找不到，或者uid格式错误
-        raise _err_func(_err_msg or '{} 不存在'.format(cls.__name__))
+    except (model.DoesNotExist, ValueError):  # 找不到，或者uid格式错误
+        raise _err_func(_err_msg or '{} 不存在'.format(model.__name__))
     return result
