@@ -3,6 +3,7 @@
 # this module provides django rest framework related methods
 import inspect
 
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -49,6 +50,6 @@ def get_object_or_error(
     try:
         result = manager.filter(*queries).select_related(*_select_models).prefetch_related(*_prefetch_models) \
             .get(**kwargs)
-    except (model.DoesNotExist, ValueError):  # 找不到，或者uid格式错误
+    except (model.DoesNotExist, ValueError, ValidationError):  # 找不到，或者uid格式错误
         raise _err_func(_err_msg or '{} 不存在'.format(model.__name__))
     return result
