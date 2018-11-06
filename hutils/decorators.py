@@ -34,6 +34,15 @@ def obj_cache(key):
 
 
 @contextlib.contextmanager
+def ignore_error(*exceptions, logger=None):
+    exceptions = exceptions or (Exception,)
+    try:
+        yield
+    except exceptions as ex:
+        log_error(logger or __name__, ex)
+
+
+@contextlib.contextmanager
 def catches(*exceptions, raises: Union[BaseException, Callable[[Exception], BaseException]], log=False, logger=None):
     """ 封装转换错误类。transfer exceptions to a different type.
 
