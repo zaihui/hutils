@@ -20,6 +20,7 @@ def obj_cache(key):
     """
 
     def decorator(func):
+
         @functools.wraps(func)
         def wrapper(obj, *args, **kwargs):
             if hasattr(obj, key):
@@ -64,3 +65,31 @@ def catches(*exceptions, raises: Union[BaseException, Callable[[Exception], Base
         if log:
             log_error(logger or __name__, raises)
         raise raises from ex
+
+
+def mutes(*exceptions, returns=None, log=True):
+    """ 出错时保持沉默，返回普通值。mute exception
+
+    Examples::
+
+        @mutes(returns=42)
+        def get_answer(a, b):
+            return a + b
+    """
+
+    exceptions = exceptions or (Exception,)
+
+    def decorator(func):
+
+        @contextlib.wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except exceptions as ex:
+                if log:
+                    log_error(__name__, ex)
+                return returns
+
+        return wrapper
+
+    return decorator
