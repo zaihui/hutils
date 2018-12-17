@@ -7,6 +7,7 @@ from .shortcuts import (
     date_to_str, datetime_combine, datetime_to_str, get_uid, list_first, list_get, log_error, mock_lambda, str_to_date,
     str_to_datetime,
 )
+from .unittest import fake_time
 from .validators import is_chinese_phone, is_int, is_uuid
 
 __version__ = '0.3.9'
@@ -36,6 +37,7 @@ __all__ = [
     'mock_lambda',
     'str_to_date',
     'str_to_datetime',
+    'fake_time',
     'is_chinese_phone',
     'is_int',
     'is_uuid',
