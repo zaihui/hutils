@@ -4,7 +4,7 @@
 import json
 
 from django.db import models, transaction
-from django.db.models import FilteredRelation, Q
+from django.db.models import Case, FilteredRelation, IntegerField, Q, Sum, When
 
 import hutils
 
@@ -203,6 +203,21 @@ class QuerySetMixin:
             if key in data:
                 queryset = queryset.filter(**{condition: data[key]})
         return queryset
+
+    def annotate_sum(self, key: str, **queries):
+        """ 实现 Sum/Case/When 的一套快捷方式
+
+        Examples::
+
+            queryset.annotate_sum('is_followed', followers__followee=account)
+
+        Equals to::
+
+            queryset.annotate(is_followed=Sum(Case(When(followers__followee=account, then=1), default=0)))
+        """
+        queryset = self._queryset
+        queries.setdefault('then', 1)
+        return queryset.annotate(**{key: Sum(Case(When(**queries), default=0, output_field=IntegerField()))})
 
     @property
     def _queryset(self) -> 'HQuerySet':
