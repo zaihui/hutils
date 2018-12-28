@@ -1,9 +1,35 @@
 import contextlib
 import datetime
+import socket
 import time
 from unittest import mock
 
 from hutils.shortcuts import str_to_datetime
+
+
+def get_disable_migration_module():
+    """ get disable migration """
+
+    class DisableMigration:
+
+        def __contains__(self, item):
+            return True
+
+        def __getitem__(self, item):
+            return None
+
+    return DisableMigration()
+
+
+def disable_network():
+    """ Disable network """
+
+    class DisableNetwork:
+
+        def __getattr__(self, item):
+            raise Exception('Network through socket is disabled!')
+
+    socket.socket = DisableNetwork
 
 
 class MockDateTime(datetime.datetime):
