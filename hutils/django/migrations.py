@@ -44,7 +44,7 @@ class AlterDefault(Operation):
         if to_field.default != NOT_PROVIDED:
             table_name = schema_editor.quote_name(meta.db_table)
             column = schema_editor.quote_name(to_field.column)
-            default = schema_editor.quote_name(to_field.default)
+            default = schema_editor.quote_value(to_field.default)
             schema_editor.execute(f'ALTER TABLE {table_name} ALTER COLUMN {column} SET DEFAULT {default}')
 
     def database_backwards(self, app_label, schema_editor: BaseDatabaseSchemaEditor, from_state, to_state):
