@@ -46,7 +46,7 @@ class Mogician:
             mock.patch('django.utils.timezone.now', MockDateTime.now),
         ]
         try:
-            import django
+            import django  # NOQA
 
             self.patchers.append(mock.patch('django.db.models.fields.Field.get_default', Mogician.mock_field_default))
         except ImportError:
