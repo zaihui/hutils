@@ -45,7 +45,7 @@ __all__ = [
 
 try:
     from .django.apis import get_validation_error, get_object_or_error  # NOQA
-    from .django.databases import DynamicField, HManager, HQuerySet, ModelMixin, flat_transaction  # NOQA
+    from .django.databases import DynamicField, HManager, HQuerySet, ModelMixin  # NOQA
     from .django.migrations import AlterDefault  # NOQA
 
     __all__.extend([
@@ -55,7 +55,6 @@ try:
         'HManager',
         'HQuerySet',
         'ModelMixin',
-        'flat_transaction',
         'AlterDefault',
     ])
 except ImportError:

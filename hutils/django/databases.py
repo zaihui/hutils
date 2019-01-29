@@ -3,29 +3,10 @@
 # this module provides django database related methods
 import json
 
-from django.db import models, transaction
+from django.db import models
 from django.db.models import Case, FilteredRelation, IntegerField, Q, Sum, When
 
 import hutils
-
-
-def flat_transaction(using: str = None, savepoint: bool = True):
-    """ 不嵌套的事务。not nested django transaction
-
-    Examples::
-
-        with flat_transaction():
-            with flat_transaction():
-                ...
-    """
-    connection = transaction.get_connection()
-    if connection.in_atomic_block:
-        context_manager = hutils.EmptyContextManager()
-        if callable(using):
-            context_manager = context_manager(using)
-        return context_manager
-    else:
-        return transaction.atomic(using, savepoint)
 
 
 class DynamicField(object):
