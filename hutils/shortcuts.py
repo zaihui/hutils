@@ -153,3 +153,13 @@ def str_to_date(value, fmt='%Y-%m-%d'):
     :rtype: datetime.date
     """
     return datetime.datetime.strptime(value, fmt).date()
+
+
+def tomorrow() -> datetime.datetime:
+    """ 获取昨天的时间 """
+    return datetime.datetime.now() + datetime.timedelta(days=1)
+
+
+def yesterday() -> datetime.datetime:
+    """ 获取昨天的时间 """
+    return datetime.datetime.now() - datetime.timedelta(days=1)
