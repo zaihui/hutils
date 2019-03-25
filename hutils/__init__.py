@@ -46,11 +46,12 @@ __all__ = [
 ]
 
 try:
-    from .django.apis import get_validation_error, get_object_or_error  # NOQA
+    from .django.apis import check_error, get_validation_error, get_object_or_error  # NOQA
     from .django.databases import DynamicField, HManager, HQuerySet, ModelMixin  # NOQA
     from .django.migrations import AlterDefault  # NOQA
 
     __all__.extend([
+        'check_error',
         'get_object_or_error',
         'get_validation_error',
         'DynamicField',
