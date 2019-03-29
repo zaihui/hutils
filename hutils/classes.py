@@ -47,6 +47,9 @@ class TupleEnum(enum.Enum):
     def get_value_at(self, index, default=None):
         return list_get(self.obj_values, index, default=default)
 
+    def get_value_from(self, index, key, default=None):
+        return self.get_value_at(index, {}).get(key, default)
+
     @property
     def chinese(self):
         return self.get_value_at(1)
