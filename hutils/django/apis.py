@@ -53,14 +53,19 @@ def get_object_or_error(
     :rtype: T
     """
     if inspect.isclass(cls) and issubclass(cls, models.Model):
-        manager = cls.objects
+        queryset = cls.objects
         model = cls
     else:
-        manager = cls
+        queryset = cls
         model = cls.model
     try:
-        result = manager.filter(*queries).select_related(*_select_models).prefetch_related(*_prefetch_models) \
-            .get(**kwargs)
+        if queries:
+            queryset = queryset.filter(*queries)
+        if _select_models:
+            queryset = queryset.select_related(*_select_models)
+        if _prefetch_models:
+            queryset = queryset.prefetch_related(*_prefetch_models)
+        result = queryset.get(**kwargs)
     except (model.DoesNotExist, ValueError, ValidationError):  # 找不到，或者uid格式错误
         raise _err_func(_err_msg or '{} 不存在'.format(model.__name__))
     return result
