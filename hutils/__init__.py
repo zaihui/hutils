@@ -10,7 +10,7 @@ from .shortcuts import (
 from .unittest import fake_time
 from .validators import is_chinese_phone, is_int, is_uuid
 
-__version__ = '0.4.7'
+__version__ = '0.5.0'
 
 __all__ = [
     'EmptyContextManager',
