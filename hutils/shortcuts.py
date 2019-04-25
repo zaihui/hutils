@@ -118,7 +118,7 @@ def mock_lambda(return_value=None, raises: Exception = None, **kwargs):
     return func
 
 
-def log_error(logger, message, *args):
+def log_error(logger, message, *args, exc_info=True, **kwargs):
     """ 记录错误日志的快捷方式，顺带支持 Sentry。log error, supports sentry detail trace.
 
     Examples::
@@ -128,11 +128,11 @@ def log_error(logger, message, *args):
     """
     if isinstance(logger, str):
         logger = logging.getLogger(logger)
-    if isinstance(message, Exception):
-        logger.exception(message, *args)
+    if isinstance(message, Exception) or exc_info:
+        logger.exception(message, *args, **kwargs)
     else:
         # https://github.com/getsentry/raven-python/blob/master/docs/integrations/logging.rst#usage
-        logger.error(message, *args, extra={'stack': True})
+        logger.error(message, *args, extra={'stack': True}, **kwargs)
 
 
 def str_to_datetime(value, fmt='%Y-%m-%d %H:%M:%S'):
