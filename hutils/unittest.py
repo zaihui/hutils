@@ -2,7 +2,17 @@ import contextlib
 import datetime
 import socket
 import time
+from collections import Callable
 from unittest import mock
+
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST,
+    HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND,
+)
 
 from hutils.shortcuts import str_to_datetime
 
@@ -101,3 +111,145 @@ def fake_time(fake_to):
     """
     with Mogician(fake_to):
         yield
+
+
+class TestCaseMixin:
+    """
+    增加一些便于测试的小方法的 Mixin
+
+    Examples:
+
+        from rest_framework.test import APITestCase
+
+        class TestCase(APITestCase, TestCaseMixin):
+            pass
+
+        class ExampleTest(TestCase):
+
+            def test_something(self):
+                response = self.client.get(url)
+                self.ok(response)
+    """
+
+    def ok(self, response, *, is_201=False, is_204=False, **kwargs):
+        """ shortcuts to response 20X """
+        expected = (is_201 and HTTP_201_CREATED) or (is_204 and HTTP_204_NO_CONTENT) or HTTP_200_OK
+        self.assertEqual(expected, response.status_code,
+                         f'status code should be {expected}: {getattr(response, "data", "")}')
+        if kwargs:
+            self.assert_same(response.data, **kwargs)
+        return self
+
+    def bad_request(self, response, **kwargs):
+        """ shortcuts to response 400 """
+        self.assertEqual(HTTP_400_BAD_REQUEST, response.status_code, 'status code should be 400')
+        if kwargs:
+            self.assert_same(response.data, **kwargs)
+
+    def not_found(self, response):
+        """ shortcuts to response 404 """
+        self.assertEqual(HTTP_404_NOT_FOUND, response.status_code)
+
+    def forbidden(self, response, **kwargs):
+        """ shortcuts to response 403 """
+        self.assertEqual(HTTP_403_FORBIDDEN, response.status_code, 'status code should be 403')
+        if kwargs:
+            self.assert_same(response.data, **kwargs)
+
+    def assert_increases(self, delta: int, func: Callable, name=''):
+        """ shortcuts to verify func change is equal to delta """
+        test_case = self
+
+        class Detector:
+
+            def __init__(self):
+                self.previous = None
+
+            def __enter__(self):
+                self.previous = func()
+
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                if not exc_val:
+                    test_case.assertEqual(self.previous + delta, func(), f'{name} should change {delta}'.strip())
+
+        return Detector()
+
+    def assert_model_increases(self, model, delta: int = 1, **lookups):
+        """ shortcuts to verify value change """
+        return self.assert_increases(delta, model.all_objects.filter(**lookups).count, model.__name__)
+
+    def assert_same(self, data, **expects):
+        """
+        shortcuts to compare value (support nested dictionaries, lists and array length)
+
+        Examples:
+
+            data = {'key': 'value'}
+            self.assert_same(data, key='value')
+
+            data = ['key', 'value']
+            self.assert_same(data, _0='key', _1='value', length=2)
+        """
+
+        def _get_key(_data, _key: str):
+            """ get the expanded value """
+            _value = _data
+            for part in _key.split('__'):
+                if part == 'length':
+                    _value = len(_value)
+                elif part == 'bool':
+                    _value = bool(_value)
+                elif part.startswith('_'):
+                    try:
+                        _value = _value[int(part[1:])]
+                    except ValueError:
+                        _value = getattr(_value, part[1:])
+                else:
+                    try:
+                        _value = _value[int(part)]
+                    except ValueError:
+                        _value = _value[part]
+            return _value
+
+        for key, expect in expects.items():
+            actual = _get_key(data, key)
+            try:
+                self.assertEqual(
+                    actual,
+                    expect,
+                    f'{key} value not match.\nExpect: {expect} ({type(expect)})\nActual: {actual} ({type(actual)})',
+                )
+            except Exception:
+                print('\nAssertionError:')
+                print(f'Actual: {data}')
+                print(f'Expect: {expects}')
+                raise
+
+    def assert_data(self, expected_data, actual_data):
+        """
+        shortcuts to compare data (expected_data can be subset of actual_data)
+
+        Examples:
+
+            expected_data = {
+                'results': [{'key': 'value'}],
+            }
+
+            actual_data = {
+                'count': 1,
+                'results': [{'key': 'value'}],
+            }
+
+            assert_data(expected_data, actual_data)
+        """
+        if isinstance(expected_data, list):
+            data = list(actual_data)
+            self.assertEqual(len(expected_data), len(data))
+            for index, item in enumerate(expected_data):
+                self.assert_data(item, data[index])
+        elif isinstance(expected_data, dict):
+            for k, v in expected_data.items():
+                self.assertTrue(k in actual_data, msg=f'{k} not in actual_data')
+                self.assert_data(v, actual_data[k])
+        else:
+            self.assertEqual(expected_data, actual_data)
