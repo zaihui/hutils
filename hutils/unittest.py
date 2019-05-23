@@ -3,16 +3,8 @@ import datetime
 import socket
 import time
 from collections import Callable
+from http import HTTPStatus
 from unittest import mock
-
-from rest_framework.status import (
-    HTTP_200_OK,
-    HTTP_201_CREATED,
-    HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST,
-    HTTP_403_FORBIDDEN,
-    HTTP_404_NOT_FOUND,
-)
 
 from hutils.shortcuts import str_to_datetime
 
@@ -129,11 +121,13 @@ class TestCaseMixin:
             def test_something(self):
                 response = self.client.get(url)
                 self.ok(response)
+
+    For details, see <tests.test_unittest.FuncTestCaseAPITests>
     """
 
     def ok(self, response, *, is_201=False, is_204=False, **kwargs):
         """ shortcuts to response 20X """
-        expected = (is_201 and HTTP_201_CREATED) or (is_204 and HTTP_204_NO_CONTENT) or HTTP_200_OK
+        expected = (is_201 and HTTPStatus.CREATED) or (is_204 and HTTPStatus.NO_CONTENT) or HTTPStatus.OK
         self.assertEqual(expected, response.status_code,
                          f'status code should be {expected}: {getattr(response, "data", "")}')
         if kwargs:
@@ -142,19 +136,22 @@ class TestCaseMixin:
 
     def bad_request(self, response, **kwargs):
         """ shortcuts to response 400 """
-        self.assertEqual(HTTP_400_BAD_REQUEST, response.status_code, 'status code should be 400')
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code, 'status code should be 400')
         if kwargs:
             self.assert_same(response.data, **kwargs)
+        return self
 
     def not_found(self, response):
         """ shortcuts to response 404 """
-        self.assertEqual(HTTP_404_NOT_FOUND, response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, response.status_code)
+        return self
 
     def forbidden(self, response, **kwargs):
         """ shortcuts to response 403 """
-        self.assertEqual(HTTP_403_FORBIDDEN, response.status_code, 'status code should be 403')
+        self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code, 'status code should be 403')
         if kwargs:
             self.assert_same(response.data, **kwargs)
+        return self
 
     def assert_increases(self, delta: int, func: Callable, name=''):
         """ shortcuts to verify func change is equal to delta """
@@ -179,17 +176,7 @@ class TestCaseMixin:
         return self.assert_increases(delta, model.all_objects.filter(**lookups).count, model.__name__)
 
     def assert_same(self, data, **expects):
-        """
-        shortcuts to compare value (support nested dictionaries, lists and array length)
-
-        Examples:
-
-            data = {'key': 'value'}
-            self.assert_same(data, key='value')
-
-            data = ['key', 'value']
-            self.assert_same(data, _0='key', _1='value', length=2)
-        """
+        """ shortcuts to compare value (support nested dictionaries, lists and array length) """
 
         def _get_key(_data, _key: str):
             """ get the expanded value """
@@ -224,24 +211,11 @@ class TestCaseMixin:
                 print(f'Actual: {data}')
                 print(f'Expect: {expects}')
                 raise
+        return self
 
     def assert_data(self, expected_data, actual_data):
-        """
-        shortcuts to compare data (expected_data can be subset of actual_data)
+        """ shortcuts to compare data (expected_data can be subset of actual_data) """
 
-        Examples:
-
-            expected_data = {
-                'results': [{'key': 'value'}],
-            }
-
-            actual_data = {
-                'count': 1,
-                'results': [{'key': 'value'}],
-            }
-
-            assert_data(expected_data, actual_data)
-        """
         if isinstance(expected_data, list):
             data = list(actual_data)
             self.assertEqual(len(expected_data), len(data))
@@ -253,3 +227,4 @@ class TestCaseMixin:
                 self.assert_data(v, actual_data[k])
         else:
             self.assertEqual(expected_data, actual_data)
+        return self

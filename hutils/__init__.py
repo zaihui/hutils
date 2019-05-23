@@ -7,13 +7,14 @@ from .shortcuts import (
     date_to_str, datetime_combine, datetime_to_str, get_uid, list_first, list_get, log_error, mock_lambda, str_to_date,
     str_to_datetime, tomorrow, yesterday,
 )
-from .unittest import fake_time
+from .unittest import TestCaseMixin, fake_time
 from .validators import is_chinese_phone, is_int, is_uuid
 
 __version__ = '0.5.1'
 
 __all__ = [
     'EmptyContextManager',
+    'TestCaseMixin',
     'TupleEnum',
     'bytes_to_str',
     'format_json',
