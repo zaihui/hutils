@@ -7,7 +7,7 @@ from .shortcuts import (
     date_to_str, datetime_combine, datetime_to_str, get_uid, list_first, list_get, log_error, mock_lambda, str_to_date,
     str_to_datetime, tomorrow, yesterday,
 )
-from .unittest import TestCaseMixin, fake_time
+from .unittest import TestCaseMixin, disable_network, fake_time, get_disable_migration_module
 from .validators import is_chinese_phone, is_int, is_uuid
 
 __version__ = '0.5.1'
@@ -17,33 +17,35 @@ __all__ = [
     'TestCaseMixin',
     'TupleEnum',
     'bytes_to_str',
-    'format_json',
-    'get_data',
-    'merge_dicts',
-    'normalize',
-    'quantize',
     'catches',
-    'mutes',
-    'ignore_error',
-    'obj_cache',
-    'get_offset_and_limit',
-    'get_start_and_end_time',
     'date_to_str',
     'datetime_combine',
     'datetime_to_str',
+    'disable_network',
+    'fake_time',
+    'format_json',
+    'get_data',
+    'get_disable_migration_module',
+    'get_offset_and_limit',
+    'get_start_and_end_time',
     'get_uid',
+    'ignore_error',
+    'is_chinese_phone',
+    'is_int',
+    'is_uuid',
     'list_first',
     'list_get',
     'log_error',
+    'merge_dicts',
     'mock_lambda',
+    'mutes',
+    'normalize',
+    'obj_cache',
+    'quantize',
     'str_to_date',
     'str_to_datetime',
     'tomorrow',
     'yesterday',
-    'fake_time',
-    'is_chinese_phone',
-    'is_int',
-    'is_uuid',
 ]
 
 try:

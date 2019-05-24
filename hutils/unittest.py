@@ -2,7 +2,7 @@ import contextlib
 import datetime
 import socket
 import time
-from collections import Callable
+from collections.abc import Callable
 from http import HTTPStatus
 from unittest import mock
 
