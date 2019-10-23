@@ -129,7 +129,7 @@ class TestCaseMixin:
         """ shortcuts to response 20X """
         expected = (is_201 and HTTPStatus.CREATED) or (is_204 and HTTPStatus.NO_CONTENT) or HTTPStatus.OK
         self.assertEqual(expected, response.status_code,
-                         f'status code should be {expected}: {getattr(response, "data", "")}')
+                         'status code should be {}: {}'.format(expected, getattr(response, 'data', '')))
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self
@@ -167,7 +167,8 @@ class TestCaseMixin:
 
             def __exit__(self, exc_type, exc_val, exc_tb):
                 if not exc_val:
-                    test_case.assertEqual(self.previous + delta, func(), f'{name} should change {delta}'.strip())
+                    test_case.assertEqual(self.previous + delta, func(),
+                                          '{} should change {}'.format(name, delta).strip())
 
         return Detector()
 
@@ -204,12 +205,13 @@ class TestCaseMixin:
                 self.assertEqual(
                     actual,
                     expect,
-                    f'{key} value not match.\nExpect: {expect} ({type(expect)})\nActual: {actual} ({type(actual)})',
+                    '{} value not match.\nExpect: {} ({})\nActual: {} ({})'.format(key, expect, type(expect), actual,
+                                                                                   type(actual)),
                 )
             except Exception:
                 print('\nAssertionError:')
-                print(f'Actual: {data}')
-                print(f'Expect: {expects}')
+                print('Actual: {}'.format(data))
+                print('Expect: {}'.format(expects))
                 raise
         return self
 
@@ -223,7 +225,7 @@ class TestCaseMixin:
                 self.assert_data(item, data[index])
         elif isinstance(expected_data, dict):
             for k, v in expected_data.items():
-                self.assertTrue(k in actual_data, msg=f'{k} not in actual_data')
+                self.assertTrue(k in actual_data, msg='{} not in actual_data'.format(k))
                 self.assert_data(v, actual_data[k])
         else:
             self.assertEqual(expected_data, actual_data)

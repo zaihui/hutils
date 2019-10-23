@@ -153,12 +153,12 @@ class QuerySetMixin:
         :param include_all: True to include deactivated instances
         :param conditions: real filters
         """
-        filtered_name = f'filtered_{name}'
+        filtered_name = 'filtered_{}'.format(name)
         key, value = conditions.popitem()
-        condition = {f'{filtered_name}__{key}': value}
+        condition = {'{}__{}'.format(filtered_name, key): value}
         if not include_all:
             conditions.setdefault('deactivated_at__isnull', True)
-        conditions = {f'{name}__{k}': v for k, v in conditions.items()}
+        conditions = {'{}__{}'.format(name, k): v for k, v in conditions.items()}
         return self._queryset.annotate(**{filtered_name: FilteredRelation(name, condition=Q(**conditions))}) \
             .filter(**condition)
 
