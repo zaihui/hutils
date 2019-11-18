@@ -74,3 +74,7 @@ class TupleEnum(enum.Enum):
             if value.name == upper_name:
                 return value
         raise ValueError('{!r} is not a valid {}'.format(upper_name, cls.__name__))
+
+    @classmethod
+    def model_kwargs(cls):
+        return {'max_length': max(len(_.value) for _ in cls), 'choices': cls.chinese_choices()}
