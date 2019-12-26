@@ -31,6 +31,21 @@ def bytes_to_str(data):
     return [bytes_to_str(_) for _ in data]
 
 
+class JSONEncoder(json.JSONEncoder):
+    """ 序列化 JSON """
+
+    def default(self, o):
+        if isinstance(o, decimal.Decimal):
+            return str(o)
+        if bson and isinstance(o, bson.Decimal128):
+            return str(o.to_decimal())
+        if isinstance(o, datetime.datetime):
+            return o.strftime('%Y-%m-%d %H:%M:%S')
+        if isinstance(o, datetime.date):
+            return o.strftime('%Y-%m-%d')
+        return json.JSONEncoder.default(self, o)
+
+
 def format_json(data, ensure_ascii=False, **kwargs):
     """ 序列化 JSON，支持中文和 datetime, decimal 类型。format json with utf8/datetime/decimal support.
 
@@ -42,22 +57,7 @@ def format_json(data, ensure_ascii=False, **kwargs):
     :rtype: str
     """
 
-    class HUtilsEncoder(json.JSONEncoder):
-        def default(self, o):
-            if isinstance(o, decimal.Decimal):
-                return str(o)
-            if bson and isinstance(o, bson.Decimal128):
-                return str(o.to_decimal())
-            if isinstance(o, datetime.datetime):
-                return o.strftime('%Y-%m-%d %H:%M:%S')
-            if isinstance(o, datetime.date):
-                return o.strftime('%Y-%m-%d')
-            return json.JSONEncoder.default(self, o)
-
-    kwargs.update(
-        ensure_ascii=ensure_ascii,
-        cls=HUtilsEncoder,
-    )
+    kwargs.update(ensure_ascii=ensure_ascii, cls=JSONEncoder)
     return json.dumps(data, **kwargs)
 
 

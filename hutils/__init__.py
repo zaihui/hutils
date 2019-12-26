@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .classes import EmptyContextManager, TupleEnum
-from .data_types import bytes_to_str, format_json, get_data, merge_dicts, normalize, quantize
+from .data_types import JSONEncoder, bytes_to_str, format_json, get_data, merge_dicts, normalize, quantize
 from .decorators import catches, ignore_error, mutes, obj_cache
 from .schemas import get_offset_and_limit, get_start_and_end_time
 from .shortcuts import (
@@ -14,6 +14,7 @@ __version__ = '0.6.1'
 
 __all__ = [
     'EmptyContextManager',
+    'JSONEncoder',
     'TestCaseMixin',
     'TupleEnum',
     'bytes_to_str',
