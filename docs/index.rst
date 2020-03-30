@@ -23,8 +23,12 @@ Classes
 
 Tuple Enum
 ^^^^^^^^^^
-
 .. autoclass:: TupleEnum
+   :members:
+
+Empty Context Manager
+^^^^^^^^^^^^^^^^^^^^^
+.. autoclass:: EmptyContextManager
    :members:
 
 
@@ -34,6 +38,10 @@ Data Types
 Bytes to String
 ^^^^^^^^^^^^^^^
 .. autofunction:: bytes_to_str
+
+JSON Encoder
+^^^^^^^^^^^^
+.. autoclass:: JSONEncoder
 
 Format JSON
 ^^^^^^^^^^^
@@ -54,6 +62,26 @@ Normalize Decimal
 Quantize Decimal
 ^^^^^^^^^^^^^^^^
 .. autofunction:: quantize
+
+
+Decorators
+----------
+
+Object Cache
+^^^^^^^^^^^^
+.. autofunction:: obj_cache
+
+Ignore Error
+^^^^^^^^^^^^
+.. autofunction:: ignore_error
+
+Catches Error
+^^^^^^^^^^^^^
+.. autofunction:: catches
+
+Mutes Error
+^^^^^^^^^^^
+.. autofunction:: mutes
 
 
 Schemas
