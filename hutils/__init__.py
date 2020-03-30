@@ -8,7 +8,7 @@ from .shortcuts import (
     str_to_datetime, tomorrow, yesterday,
 )
 from .unittest import TestCaseMixin, disable_network, fake_time, get_disable_migration_module
-from .validators import is_chinese_phone, is_int, is_uuid
+from .validators import is_chinese_phone, is_singapore_phone, is_phone, is_int, is_uuid
 
 __version__ = '0.6.1'
 
@@ -32,6 +32,8 @@ __all__ = [
     'get_uid',
     'ignore_error',
     'is_chinese_phone',
+    'is_singapore_phone',
+    'is_phone',
     'is_int',
     'is_uuid',
     'list_first',

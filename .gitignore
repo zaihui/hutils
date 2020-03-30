@@ -13,3 +13,4 @@ env/
 
 *.egg-info/
 
+.python-version
