@@ -20,6 +20,7 @@ class ValidatorsTests(unittest.TestCase):
 
     def test_is_int(self):
         self.assertTrue(hutils.is_int("1"))
+        self.assertTrue(hutils.is_int("-1"))
         self.assertFalse(hutils.is_int("a"))
 
     def test_is_chinese_phone(self):
