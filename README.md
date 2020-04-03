@@ -4,8 +4,8 @@
     <a href="https://pypi.python.org/pypi/hutils">
         <img src="https://img.shields.io/pypi/v/hutils.svg" alt="Package" />
     </a>
-    <a href="https://travis-ci.org/zaihui/hutils">
-        <img src="https://img.shields.io/travis/zaihui/hutils.svg" alt="Travis" />
+    <a href="https://github.com/zaihui/hutils">
+        <img src="https://github.com/zaihui/hutils/workflows/Build/badge.svg" alt="Build Status" />
     </a>
     <a href="https://hutils.readthedocs.io/en/latest/?badge=latest">
         <img src="https://readthedocs.org/projects/hutils/badge/?version=latest" alt="RTFD" />
