@@ -72,6 +72,7 @@ class Mogician:
             mock.patch('time.time', lambda: time.mktime(self.the_datetime.timetuple())),
             mock.patch('datetime.datetime', MockDateTime),
             mock.patch('django.utils.timezone.now', MockDateTime.now),
+            mock.patch('time.localtime', lambda: time.struct_time(self.the_datetime.timetuple())),
         ]
         try:
             import django  # NOQA
