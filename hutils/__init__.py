@@ -10,7 +10,7 @@ from .shortcuts import (
 from .unittest import TestCaseMixin, disable_network, fake_time, get_disable_migration_module
 from .validators import is_chinese_phone, is_singapore_phone, is_phone, is_int, is_uuid
 
-__version__ = '0.6.1'
+__version__ = '0.6.2'
 
 __all__ = [
     'EmptyContextManager',
