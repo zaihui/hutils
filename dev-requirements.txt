@@ -1,5 +1,0 @@
-twine
-wheel
-bumpversion
-sphinx
-sphinx-autobuild

@@ -1,9 +1,0 @@
--r requirements.txt
-
-flake8-commas>=2.0.0
-flake8-quotes>=1.0.0
-flake8>=3.5.0
-pymongo>=3.4.0
-pytest>=3.6.1
-django
-djangorestframework
