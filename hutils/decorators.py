@@ -20,7 +20,6 @@ def obj_cache(key):
     """
 
     def decorator(func):
-
         @functools.wraps(func)
         def wrapper(obj, *args, **kwargs):
             if hasattr(obj, key):
@@ -80,7 +79,6 @@ def mutes(*exceptions, returns=None, log=True):
     exceptions = exceptions or (Exception,)
 
     def decorator(func):
-
         @contextlib.wraps(func)
         def wrapper(*args, **kwargs):
             try:

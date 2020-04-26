@@ -28,10 +28,7 @@ class AlterDefault(Operation):
         return (
             self.__class__.__name__,
             [],
-            {
-                'model_name': self.model_name,
-                'name': self.name,
-            },
+            {"model_name": self.model_name, "name": self.name},
         )
 
     def state_forwards(self, app_label, state):
@@ -45,10 +42,10 @@ class AlterDefault(Operation):
             table_name = schema_editor.quote_name(meta.db_table)
             column = schema_editor.quote_name(to_field.column)
             default = schema_editor.quote_value(to_field.default)
-            schema_editor.execute('ALTER TABLE {} ALTER COLUMN {} SET DEFAULT {}'.format(table_name, column, default))
+            schema_editor.execute("ALTER TABLE {} ALTER COLUMN {} SET DEFAULT {}".format(table_name, column, default))
 
     def database_backwards(self, app_label, schema_editor: BaseDatabaseSchemaEditor, from_state, to_state):
         self.database_forwards(app_label, schema_editor, from_state, to_state)
 
     def describe(self):
-        return 'Altering default value for {}.{}'.format(self.model_name, self.name)
+        return "Altering default value for {}.{}".format(self.model_name, self.name)

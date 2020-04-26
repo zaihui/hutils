@@ -21,10 +21,19 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip pipenv
-          pipenv --python 3
+          pipenv sync
+          pipenv run pip install pytest
+
+      - name: Run Tests
+        run: |
+          pipenv run pytest
+
           pipenv sync --dev
+          pipenv run pytest
+
+          pipenv run flake8 hutils *.py
 
       - name: Check code style
+        if: matrix.python-version == 3.7
         run: |
-          pipenv run flake8 hutils *.py
-          pipenv run pytest
+          pipenv run black -l 120 -t py35 -t py36 -t py37 -t py38 --check hutils tests
