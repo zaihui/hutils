@@ -7,7 +7,6 @@ import hutils
 
 
 class ValidatorsTests(unittest.TestCase):
-
     def setUp(self):
         logging.disable(logging.CRITICAL)
 

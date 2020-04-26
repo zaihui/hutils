@@ -13,7 +13,6 @@ def get_disable_migration_module():
     """ get disable migration """
 
     class DisableMigration:
-
         def __contains__(self, item):
             return True
 
@@ -27,9 +26,8 @@ def disable_network():
     """ Disable network """
 
     class DisableNetwork:
-
         def __getattr__(self, item):
-            raise Exception('Network through socket is disabled!')
+            raise Exception("Network through socket is disabled!")
 
     socket.socket = DisableNetwork
 
@@ -43,7 +41,7 @@ class MockDateTime(datetime.datetime):
 
     def __sub__(self, other):
         result = super(MockDateTime, self).__sub__(other)
-        if hasattr(result, 'timetuple'):
+        if hasattr(result, "timetuple"):
             return MockDateTime.fromtimestamp(time.mktime(result.timetuple()))
         return result
 
@@ -57,27 +55,32 @@ class Mogician:
 
         if field.has_default():
             if callable(field.default):
-                if field.default.__name__ == 'now':
+                if field.default.__name__ == "now":
                     return datetime.datetime.now()
                 return field.default()
             return field.default
-        if not field.empty_strings_allowed or \
-                (field.null and not DefaultConnectionProxy().features.interprets_empty_strings_as_nulls):
+        if not field.empty_strings_allowed or (
+            field.null and not DefaultConnectionProxy().features.interprets_empty_strings_as_nulls
+        ):
             return None
-        return ''
+        return ""
 
     def __init__(self, fake_to):
         self.the_datetime = fake_to if isinstance(fake_to, datetime.datetime) else str_to_datetime(fake_to)
         self.patchers = [
-            mock.patch('time.time', lambda: time.mktime(self.the_datetime.timetuple())),
-            mock.patch('datetime.datetime', MockDateTime),
-            mock.patch('django.utils.timezone.now', MockDateTime.now),
-            mock.patch('time.localtime', lambda: time.struct_time(self.the_datetime.timetuple())),
+            mock.patch("datetime.datetime", MockDateTime),
+            mock.patch("time.localtime", lambda: time.struct_time(self.the_datetime.timetuple())),
+            mock.patch("time.time", lambda: time.mktime(self.the_datetime.timetuple())),
         ]
         try:
             import django  # NOQA
 
-            self.patchers.append(mock.patch('django.db.models.fields.Field.get_default', Mogician.mock_field_default))
+            self.patchers.extend(
+                [
+                    mock.patch("django.db.models.fields.Field.get_default", Mogician.mock_field_default),
+                    mock.patch("django.utils.timezone.now", MockDateTime.now),
+                ]
+            )
         except ImportError:
             pass
 
@@ -129,15 +132,18 @@ class TestCaseMixin:
     def ok(self, response, *, is_201=False, is_204=False, **kwargs):
         """ shortcuts to response 20X """
         expected = (is_201 and HTTPStatus.CREATED) or (is_204 and HTTPStatus.NO_CONTENT) or HTTPStatus.OK
-        self.assertEqual(expected, response.status_code,
-                         'status code should be {}: {}'.format(expected, getattr(response, 'data', '')))
+        self.assertEqual(
+            expected,
+            response.status_code,
+            "status code should be {}: {}".format(expected, getattr(response, "data", "")),
+        )
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self
 
     def bad_request(self, response, **kwargs):
         """ shortcuts to response 400 """
-        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code, 'status code should be 400')
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code, "status code should be 400")
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self
@@ -149,17 +155,16 @@ class TestCaseMixin:
 
     def forbidden(self, response, **kwargs):
         """ shortcuts to response 403 """
-        self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code, 'status code should be 403')
+        self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code, "status code should be 403")
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self
 
-    def assert_increases(self, delta: int, func: Callable, name=''):
+    def assert_increases(self, delta: int, func: Callable, name=""):
         """ shortcuts to verify func change is equal to delta """
         test_case = self
 
         class Detector:
-
             def __init__(self):
                 self.previous = None
 
@@ -168,8 +173,9 @@ class TestCaseMixin:
 
             def __exit__(self, exc_type, exc_val, exc_tb):
                 if not exc_val:
-                    test_case.assertEqual(self.previous + delta, func(),
-                                          '{} should change {}'.format(name, delta).strip())
+                    test_case.assertEqual(
+                        self.previous + delta, func(), "{} should change {}".format(name, delta).strip()
+                    )
 
         return Detector()
 
@@ -183,12 +189,12 @@ class TestCaseMixin:
         def _get_key(_data, _key: str):
             """ get the expanded value """
             _value = _data
-            for part in _key.split('__'):
-                if part == 'length':
+            for part in _key.split("__"):
+                if part == "length":
                     _value = len(_value)
-                elif part == 'bool':
+                elif part == "bool":
                     _value = bool(_value)
-                elif part.startswith('_'):
+                elif part.startswith("_"):
                     try:
                         _value = _value[int(part[1:])]
                     except ValueError:
@@ -206,13 +212,14 @@ class TestCaseMixin:
                 self.assertEqual(
                     actual,
                     expect,
-                    '{} value not match.\nExpect: {} ({})\nActual: {} ({})'.format(key, expect, type(expect), actual,
-                                                                                   type(actual)),
+                    "{} value not match.\nExpect: {} ({})\nActual: {} ({})".format(
+                        key, expect, type(expect), actual, type(actual)
+                    ),
                 )
             except Exception:
-                print('\nAssertionError:')
-                print('Actual: {}'.format(data))
-                print('Expect: {}'.format(expects))
+                print("\nAssertionError:")
+                print("Actual: {}".format(data))
+                print("Expect: {}".format(expects))
                 raise
         return self
 
@@ -226,7 +233,7 @@ class TestCaseMixin:
                 self.assert_data(item, data[index])
         elif isinstance(expected_data, dict):
             for k, v in expected_data.items():
-                self.assertTrue(k in actual_data, msg='{} not in actual_data'.format(k))
+                self.assertTrue(k in actual_data, msg="{} not in actual_data".format(k))
                 self.assert_data(v, actual_data[k])
         else:
             self.assertEqual(expected_data, actual_data)

@@ -4,8 +4,8 @@
 import re
 import uuid
 
-CHINESE_PHONE_REGEX = re.compile(r'^1[3-9][0-9]{9}$')
-SINGAPORE_PHONE_REGEX = re.compile(r'^[8|9]\d{7}$')
+CHINESE_PHONE_REGEX = re.compile(r"^1[3-9][0-9]{9}$")
+SINGAPORE_PHONE_REGEX = re.compile(r"^[8|9]\d{7}$")
 
 
 def is_uuid(string):

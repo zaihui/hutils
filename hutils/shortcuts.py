@@ -9,8 +9,8 @@ from typing import Iterable, Optional, Tuple
 
 
 def datetime_combine(
-        start_date: datetime.date, end_date: datetime.date = None,
-        delta_days: Optional[int] = None) -> Tuple[datetime.datetime, datetime.datetime]:
+    start_date: datetime.date, end_date: datetime.date = None, delta_days: Optional[int] = None
+) -> Tuple[datetime.datetime, datetime.datetime]:
     """ 获取一段日期的起止时间。get start/end datetime from date.
 
     Examples::
@@ -20,7 +20,7 @@ def datetime_combine(
         today, a_week_after = datetime_combine(datetime.date.today(), delta_days=7)
     """
     if end_date and delta_days is not None:
-        raise ValueError('Can not specify end_date and delta_days at the same time')
+        raise ValueError("Can not specify end_date and delta_days at the same time")
     if delta_days is not None:
         start_date, end_date = start_date, start_date + datetime.timedelta(days=delta_days)
         if delta_days < 0:
@@ -32,7 +32,7 @@ def datetime_combine(
     )
 
 
-def datetime_to_str(value, fmt='%Y-%m-%d %H:%M:%S'):
+def datetime_to_str(value, fmt="%Y-%m-%d %H:%M:%S"):
     """ 时间类型转换为字符串。datetime to string.
 
     :type value: datetime.datetime
@@ -42,7 +42,7 @@ def datetime_to_str(value, fmt='%Y-%m-%d %H:%M:%S'):
     return value.strftime(fmt)
 
 
-def date_to_str(value, fmt='%Y-%m-%d'):
+def date_to_str(value, fmt="%Y-%m-%d"):
     """ 日期类型转换为字符串。date to string.
 
     :type value: datetime.date
@@ -132,10 +132,10 @@ def log_error(logger, message, *args, exc_info=True, **kwargs):
         logger.exception(message, *args, **kwargs)
     else:
         # https://github.com/getsentry/raven-python/blob/master/docs/integrations/logging.rst#usage
-        logger.error(message, *args, extra={'stack': True}, **kwargs)
+        logger.error(message, *args, extra={"stack": True}, **kwargs)
 
 
-def str_to_datetime(value, fmt='%Y-%m-%d %H:%M:%S'):
+def str_to_datetime(value, fmt="%Y-%m-%d %H:%M:%S"):
     """ 时间类型转换为字符串。datetime to string.
 
     :type value: str
@@ -145,7 +145,7 @@ def str_to_datetime(value, fmt='%Y-%m-%d %H:%M:%S'):
     return datetime.datetime.strptime(value, fmt)
 
 
-def str_to_date(value, fmt='%Y-%m-%d'):
+def str_to_date(value, fmt="%Y-%m-%d"):
     """ 日期类型转换为字符串。date to string.
 
     :type value: str

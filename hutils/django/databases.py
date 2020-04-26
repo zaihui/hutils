@@ -40,7 +40,7 @@ class DynamicField(object):
         setattr(self._model, self._field, self._field_value)
 
     def __setattr__(self, key, value):
-        if key.startswith('_'):
+        if key.startswith("_"):
             return super(DynamicField, self).__setattr__(key, value)
         if value is None:  # None is default value, don't save
             self._memory_data.pop(key, None)
@@ -52,7 +52,7 @@ class DynamicField(object):
         self.__setattr__(key, value)
 
     def __getattr__(self, attr):
-        if attr.startswith('_'):
+        if attr.startswith("_"):
             return super(DynamicField, self).__getattribute__(attr)
         return self._memory_data.get(attr, None)
 
@@ -62,7 +62,7 @@ class DynamicField(object):
     @classmethod
     def make_field(cls, field_name):
         def _wrap(obj) -> DynamicField:
-            private_field_name = '_{}'.format('field_name')
+            private_field_name = "_{}".format("field_name")
             if not hasattr(obj, private_field_name):
                 setattr(obj, private_field_name, cls(obj, field_name))
             return getattr(obj, private_field_name)
@@ -134,7 +134,7 @@ class ModelMixin(object):
 class QuerySetMixin:
     """ 减少代码重复，一个地方写，两个地方用 :) """
 
-    def filter_related(self, name: str, *, include_all=False, **conditions) -> 'HQuerySet':
+    def filter_related(self, name: str, *, include_all=False, **conditions) -> "HQuerySet":
         """ 利用 FilteredRelation 优化 Query 的方法
         官方文档参见: https://docs.djangoproject.com/en/2.1/ref/models/querysets/#filteredrelation-objects
 
@@ -153,16 +153,17 @@ class QuerySetMixin:
         :param include_all: True to include deactivated instances
         :param conditions: real filters
         """
-        filtered_name = 'filtered_{}'.format(name)
+        filtered_name = "filtered_{}".format(name)
         key, value = conditions.popitem()
-        condition = {'{}__{}'.format(filtered_name, key): value}
+        condition = {"{}__{}".format(filtered_name, key): value}
         if not include_all:
-            conditions.setdefault('deactivated_at__isnull', True)
-        conditions = {'{}__{}'.format(name, k): v for k, v in conditions.items()}
-        return self._queryset.annotate(**{filtered_name: FilteredRelation(name, condition=Q(**conditions))}) \
-            .filter(**condition)
+            conditions.setdefault("deactivated_at__isnull", True)
+        conditions = {"{}__{}".format(name, k): v for k, v in conditions.items()}
+        return self._queryset.annotate(**{filtered_name: FilteredRelation(name, condition=Q(**conditions))}).filter(
+            **condition
+        )
 
-    def filter_if_in(self, data: dict, **fields: str) -> 'HQuerySet':
+    def filter_if_in(self, data: dict, **fields: str) -> "HQuerySet":
         """ 根据传不传值决定要不要筛选的方法
 
         Examples::
@@ -197,11 +198,11 @@ class QuerySetMixin:
             queryset.annotate(is_followed=Sum(Case(When(followers__followee=account, then=1), default=0)))
         """
         queryset = self._queryset
-        queries.setdefault('then', 1)
+        queries.setdefault("then", 1)
         return queryset.annotate(**{key: Sum(Case(When(**queries), default=0, output_field=IntegerField()))})
 
     @property
-    def _queryset(self) -> 'HQuerySet':
+    def _queryset(self) -> "HQuerySet":
         if isinstance(self, models.Manager):
             return self.get_queryset()
         # noinspection PyTypeChecker

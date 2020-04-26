@@ -40,9 +40,9 @@ class JSONEncoder(json.JSONEncoder):
         if bson and isinstance(o, bson.Decimal128):
             return str(o.to_decimal())
         if isinstance(o, datetime.datetime):
-            return o.strftime('%Y-%m-%d %H:%M:%S')
+            return o.strftime("%Y-%m-%d %H:%M:%S")
         if isinstance(o, datetime.date):
-            return o.strftime('%Y-%m-%d')
+            return o.strftime("%Y-%m-%d")
         return json.JSONEncoder.default(self, o)
 
 
@@ -107,7 +107,7 @@ def normalize(value):
     :rtype: str
     """
     str_value = str(value)
-    return str_value.rstrip('0').rstrip('.') if '.' in str_value else str_value
+    return str_value.rstrip("0").rstrip(".") if "." in str_value else str_value
 
 
 def quantize(value, rounding=decimal.ROUND_HALF_UP):
@@ -120,4 +120,4 @@ def quantize(value, rounding=decimal.ROUND_HALF_UP):
 
     :rtype: decimal.Decimal
     """
-    return decimal.Decimal(value).quantize(decimal.Decimal('.01'), rounding=rounding)
+    return decimal.Decimal(value).quantize(decimal.Decimal(".01"), rounding=rounding)

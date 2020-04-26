@@ -18,11 +18,11 @@ def get_validation_error(message, data=None, code=None):
     """
     from rest_framework.exceptions import ValidationError
 
-    error = {'message': str(message)}
+    error = {"message": str(message)}
     if data is not None:
-        error['data'] = data
+        error["data"] = data
     if code is not None:
-        error['code'] = code
+        error["code"] = code
     return ValidationError(error)
 
 
@@ -38,7 +38,8 @@ def check_error(error, *args, error_method=get_validation_error, **kwargs):
 
 
 def get_object_or_error(
-        cls, *queries, _select_models=(), _prefetch_models=(), _err_msg=None, _err_func=get_validation_error, **kwargs):
+    cls, *queries, _select_models=(), _prefetch_models=(), _err_msg=None, _err_func=get_validation_error, **kwargs
+):
     """ 类似 get_object_or_404。similar to get_object_or_404.
 
     Examples::
@@ -67,5 +68,5 @@ def get_object_or_error(
     try:
         result = queryset.get(**kwargs)
     except (model.DoesNotExist, ValueError, ValidationError):  # 找不到，或者uid格式错误
-        raise _err_func(_err_msg or '{} 不存在'.format(model.__name__))
+        raise _err_func(_err_msg or "{} 不存在".format(model.__name__))
     return result
