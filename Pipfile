@@ -4,7 +4,6 @@ verify_ssl = true
 name = "aliyun"
 
 [packages]
-enum34 = {version = ">=1.1.4", markers="python_version < '3.4'"}
 
 [dev-packages]
 black = "==19.10b0"
@@ -15,8 +14,6 @@ flake8 = ">=3.5.0"
 pipenv = ">=2018.11.26"
 pymongo = ">=3.4.0"
 pytest = ">=5.4.0"
-sphinx = "*"
-sphinx-autobuild = "*"
 twine = "*"
 wheel = "*"
 
