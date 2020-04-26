@@ -1,31 +1,67 @@
 # HUtils, a charming python web util-library.
 
-<p align="center">
-    <a href="https://pypi.python.org/pypi/hutils">
-        <img src="https://img.shields.io/pypi/v/hutils.svg" alt="Package" />
-    </a>
-    <a href="https://github.com/zaihui/hutils">
-        <img src="https://github.com/zaihui/hutils/workflows/Build/badge.svg" alt="Build Status" />
-    </a>
-    <a href="https://hutils.readthedocs.io/en/latest/?badge=latest">
-        <img src="https://readthedocs.org/projects/hutils/badge/?version=latest" alt="RTFD" />
-    </a>
-</p>
+[![Build](https://github.com/zaihui/hutils/workflows/Build/badge.svg)](https://github.com/zaihui/hutils)
+[![Package](https://img.shields.io/pypi/v/hutils.svg)](https://pypi.python.org/pypi/hutils)
+[![Versions](https://img.shields.io/pypi/pyversions/hutils.svg)](https://pypi.python.org/pypi/hutils)
 
-本项目为我司（[@zaihui](https://github.com/zaihui)）在后端开发中，
+本项目为我司 [@zaihui](https://github.com/zaihui) 在后端开发中，
 积攒的比较好用的各类基类函数。
+除了基础的类型变换，
+还有 django/~~grpc~~ 相关的一系列功能。
+
+让我们简单看一段用上了 hutils 以后的效果：
+
+```python
+import hutils
+
+# 使用前
+def create_user(data):
+    try:
+        uid, age, phone, created_at = data["uid"], data["age"], data["phone"], data["created_at"]
+        # 此处做一系列类型验证，或者用个 marshmallow 之类的库来验证 :)
+        return User(uid=uid, age=age, phone=phone, created_at=created_at)
+    except Exception as ex:
+        logger.exception(ex)
+
+# 使用后
+@hutils.mutes(log=True)
+def create_user(data):
+    uid, age, phone, created_at = hutils.get_data(data, "uid", "age", "phone", "created_at")
+    created_at = created_at or hutils.yesterday()
+    if not all([hutils.is_uuid(uid), hutils.is_int(age), hutils.is_phone(phone)]):
+        return None
+    return User(uid=uid, age=age, phone=phone, created_at=created_at)
+```
+
+详细的文档可以参见下方。
+总而言之，`hutils` 库的目标就是：
+
+**Let coding in python be a pleasure!**
 
 
 ## Installation
 
-```
+```shell script
 pip install hutils
 ```
 
 
 ## Document
 
-文档地址请参见 [ReadTheDocs - hutils](https://hutils.readthedocs.io/en/latest/?badge=latest)
+> 文档地址补充中...
+
+
+## Contribution
+
+假如你想增加新的基类函数，
+请先[提交一个 issue 说明一下](https://github.com/zaihui/hutils/issues/new)。
+
+本项目的代码需要符合以下标准：
+
+- **必须:** 单元测试必须要通过
+  - 依赖第三方库时(比如 `django`), 不能因为缺少依赖而导致整个 `import hutils` 都挂了。
+- **必须:** 基础语法风格检查必须要通过
+- **推荐:** 每个函数都要有对应的单元测试
 
 
 ## License
