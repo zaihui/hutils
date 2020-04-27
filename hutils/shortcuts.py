@@ -72,6 +72,11 @@ def get_uid(instance):
     return instance.uid.hex if instance else None
 
 
+def identity(value):
+    """ 直接返回值, 常用于函数式编程中. identity, used in functional programming mostly. """
+    return value
+
+
 def list_first(instances: Iterable, default=None):
     """ 获取列表的第一个元素，假如没有第一个元素则返回默认值。get first value of a list or default value.
 
