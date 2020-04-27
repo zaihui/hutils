@@ -48,7 +48,55 @@ pip install hutils
 
 ## Document
 
-> 文档地址补充中...
+```python
+# 在本节文档用法中，
+# 我们会从具体的使用场景来介绍 hutils 里的基类函数库。
+# 详尽的参数可以读源码，
+# 我们尽最大努力保持着源码的可读性。
+
+# 使用了尽可能短的包名，
+# 就是为了直接 `import hutils` 的，
+# 切记不要 `from hutils import *`
+import hutils
+
+# 有时你想把一些 bytes/str 的变量统一转成 str
+x = b'bytes' or 'string'
+print(hutils.bytes_to_str(x))
+
+# 在计算金额时，你需要做两位小数的算数
+# 而在返给前段时，又要去掉最末的 0
+interest = hutils.quantize(98.0 * 0.05)
+print(f'利息为¥{hutils.normalize(interest)}元')
+
+# 你可能需要给前端返回两个字典的合集，
+# 并转换成 json
+print(hutils.format_json(hutils.merge_dicts(
+    {'a': 1, 'b': 2},
+    {'a': 1, 'c': []},
+)))
+
+# 有时从前端的数据中，你要取值
+request_data = {'key1': 'value', 'key2': 'value2', 'key3': 'value3'}
+print(hutils.get_data(request, 'key1', 'key2', 'key3'))
+
+# 前端会传性别进来，
+# 对应后端要有常量的验证
+class Genders(hutils.TupleEnum):
+    MALE = 0, '男性'
+    FEMALE = 1, '女性'
+    UNKNOWN = 2, '未知'
+print(Genders.chinese_choices())
+with hutils.catches(raises=HTTP400Error):
+    gender = Genders(request_data['gender'])
+
+# 以及各种无副作用的短函数
+start, end = hutils.yesterday(), hutils.tomorrow()
+start_morning, end_evening = hutils.datetime_combine(start, end)
+print(f'有效期起始日为昨日凌晨({hutils.datetime_to_str(start_morning)})')
+```
+
+关于更多的文档，
+请直接在源码里查看吧 :)
 
 
 ## Contribution
