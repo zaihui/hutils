@@ -1,6 +1,7 @@
 import functools as fn
 
 import grpc
+from django.core.exceptions import ValidationError
 
 from hutils import format_json
 
@@ -8,8 +9,6 @@ from hutils import format_json
 def register_servicer_command(func):
     @fn.wraps(func)
     def wrapper(request, context):
-        from django.core.exceptions import ValidationError
-
         try:
             return func(request, context)
         except ValidationError as ex:
@@ -21,9 +20,8 @@ def register_servicer_command(func):
 
 
 class GrpcMetaclass(type):
-    def __init__(cls, what, bases=None, attrs=None):
-        super(GrpcMetaclass, cls).__init__(what, bases, attrs)
-
+    def __new__(mcs, what, bases, attrs):
         for key in attrs.keys():
             if key[0].isupper():
                 attrs[key] = register_servicer_command(attrs[key])
+        return super(GrpcMetaclass, mcs).__new__(mcs, what, bases, attrs)
