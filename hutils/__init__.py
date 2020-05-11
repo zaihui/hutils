@@ -62,7 +62,7 @@ __all__ = [
 ]
 
 try:
-    from .django.apis import check_error, get_validation_error, get_object_or_error  # NOQA
+    from .django.apis import Errors, check_error, get_validation_error, get_object_or_error  # NOQA
     from .django.databases import DynamicField, HManager, HQuerySet, ModelMixin  # NOQA
     from .django.migrations import AlterDefault  # NOQA
     from .django.unittest import extend_django_sqlite  # NOQA
@@ -71,6 +71,7 @@ try:
         [
             "AlterDefault",
             "DynamicField",
+            "Errors",
             "HManager",
             "HQuerySet",
             "ModelMixin",

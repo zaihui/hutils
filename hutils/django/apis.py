@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 #
 # this module provides django rest framework related methods
+import enum
 import inspect
 
 from django.core.exceptions import ValidationError
 from django.db import models
+
+from hutils import list_get, log_error
 
 
 def get_validation_error(message, data=None, code=None):
@@ -16,7 +19,10 @@ def get_validation_error(message, data=None, code=None):
 
     :rtype: rest_framework.exceptions.ValidationError
     """
-    from rest_framework.exceptions import ValidationError
+    try:
+        from rest_framework.exceptions import ValidationError
+    except ImportError:
+        from django.core.exceptions import ValidationError
 
     error = {"message": str(message)}
     if data is not None:
@@ -70,3 +76,31 @@ def get_object_or_error(
     except (model.DoesNotExist, ValueError, ValidationError):  # 找不到，或者uid格式错误
         raise _err_func(_err_msg or "{} 不存在".format(model.__name__))
     return result
+
+
+class Errors(enum.Enum):
+    """ 错误类 """
+
+    def __new__(cls, value, *args):
+        obj = object.__new__(cls)
+        obj._value_ = value
+        obj.obj_values = [value] + list(args)
+        return obj
+
+    def check(self, condition):
+        check_error(condition, self.value, code=self.code)
+
+    def error(self, *args, error_data=None, error_code=None, logger=None, **kwargs):
+        if logger:
+            log_error(logger, self.value)
+        return get_validation_error(self.value.format(*args, **kwargs), data=error_data, code=error_code)
+
+    @classmethod
+    def lazy_error(cls, ex: Exception):
+        """ 一般这里都是后端懒的搞，直接 except Exception 转前端报错。一般不推荐，所以在这种情况都统统打 sentry, 一定要处理 """
+        log_error(__name__, ex)
+        return get_validation_error(str(ex))
+
+    @property
+    def code(self):
+        return list_get(self.obj_values, 1, default=None)
