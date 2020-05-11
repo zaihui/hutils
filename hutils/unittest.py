@@ -225,8 +225,8 @@ class TestCaseMixin:
             actual = _get_key(data, key)
             try:
                 self.assertEqual(
-                    actual,
                     expect,
+                    actual,
                     "{} value not match.\nExpect: {} ({})\nActual: {} ({})".format(
                         key, expect, type(expect), actual, type(actual)
                     ),
