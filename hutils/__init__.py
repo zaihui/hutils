@@ -83,3 +83,14 @@ try:
     )
 except ImportError:
     pass
+
+
+try:
+    from .grpc.servicers import GrpcMetaclass, register_servicer_command  # NOQA
+    from .grpc.unittest import FakeChannel, FakeContext, FakeRpcError, FakeServer  # NOQA
+
+    __all__.extend(
+        ["FakeChannel", "FakeContext", "FakeRpcError", "FakeServer", "GrpcMetaclass", "register_servicer_command"]
+    )
+except ImportError:
+    pass
