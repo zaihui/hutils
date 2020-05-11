@@ -187,9 +187,16 @@ class TestCaseMixin:
 
         return Detector()
 
-    def assert_model_increases(self, model, delta: int = 1, **lookups):
+    def assert_model_increases(self, *models, delta: int = 1, **lookups):
         """ shortcuts to verify value change """
-        return self.assert_increases(delta, model.all_objects.filter(**lookups).count, model.__name__)
+        stack = contextlib.ExitStack()
+        for case in models:
+            if isinstance(case, tuple):
+                model, delta = case
+            else:
+                model, delta = case, 1
+            stack.enter_context(self.assert_increases(delta, model.all_objects.filter(**lookups).count, model.__name__))
+        return stack
 
     def assert_same(self, data, **expects):
         """ shortcuts to compare value (support nested dictionaries, lists and array length) """
