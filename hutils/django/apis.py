@@ -21,15 +21,17 @@ def get_validation_error(message, data=None, code=None):
     """
     try:
         from rest_framework.exceptions import ValidationError
+
+        error = {"message": str(message)}
+        if data is not None:
+            error["data"] = data
+        if code is not None:
+            error["code"] = code
+        return ValidationError(error)
     except ImportError:
         from django.core.exceptions import ValidationError
 
-    error = {"message": str(message)}
-    if data is not None:
-        error["data"] = data
-    if code is not None:
-        error["code"] = code
-    return ValidationError(error)
+        return ValidationError(message=message, code=code, params=data)
 
 
 def check_error(error, *args, error_method=get_validation_error, **kwargs):
