@@ -1,5 +1,6 @@
 import contextlib
 import datetime
+import os
 import socket
 import time
 from collections.abc import Callable
@@ -26,10 +27,24 @@ def disable_network():
     """ Disable network """
 
     class DisableNetwork:
-        def __getattr__(self, item):
+        def __init__(self, *args, **kwargs):
             raise Exception("Network through socket is disabled!")
 
+        def __call__(self, *args, **kwargs):
+            raise Exception("Network through socket is disabled!")
+
+    real_socket = socket.socket
     socket.socket = DisableNetwork
+    patcher = mock.patch("asyncio.selector_events.socket.socket", real_socket)
+    patcher.start()
+
+    return patcher
+
+
+def disable_elastic_apm():
+    """ disable elastic apm """
+    os.environ["ELASTIC_APM_DISABLE_SEND"] = "true"
+    os.environ["ELASTIC_APM_CENTRAL_CONFIG"] = "false"
 
 
 class MockDateTime(datetime.datetime):
