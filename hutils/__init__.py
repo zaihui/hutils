@@ -18,7 +18,7 @@ from .shortcuts import (
     tomorrow,
     yesterday,
 )
-from .unittest import TestCaseMixin, disable_migration, disable_network, fake_time
+from .unittest import TestCaseMixin, disable_elastic_apm, disable_migration, disable_network, fake_time
 from .validators import is_chinese_phone, is_int, is_phone, is_singapore_phone, is_uuid
 
 __version__ = "1.0.6"
@@ -33,6 +33,7 @@ __all__ = [
     "date_to_str",
     "datetime_combine",
     "datetime_to_str",
+    "disable_elastic_apm",
     "disable_migration",
     "disable_network",
     "fake_time",
