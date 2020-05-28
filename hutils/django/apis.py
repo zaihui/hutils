@@ -89,8 +89,8 @@ class Errors(enum.Enum):
         obj.obj_values = [value] + list(args)
         return obj
 
-    def check(self, condition):
-        check_error(condition, self.value, code=self.code)
+    def check(self, condition, **kwargs):
+        check_error(condition, self.value.format(**kwargs), code=self.code)
 
     def error(self, *args, error_data=None, error_code=None, logger=None, **kwargs):
         if logger:
