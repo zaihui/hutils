@@ -64,7 +64,7 @@ __all__ = [
 
 try:
     from .django.apis import Errors, check_error, get_validation_error, get_object_or_error  # NOQA
-    from .django.databases import DynamicField, HManager, HQuerySet, ModelMixin  # NOQA
+    from .django.databases import DynamicField, ExtendModelMixin, HManager, HQuerySet, ModelMixin  # NOQA
     from .django.migrations import AlterDefault  # NOQA
     from .django.unittest import extend_django_sqlite  # NOQA
 
@@ -73,6 +73,7 @@ try:
             "AlterDefault",
             "DynamicField",
             "Errors",
+            "ExtendModelMixin",
             "HManager",
             "HQuerySet",
             "ModelMixin",
@@ -81,17 +82,6 @@ try:
             "get_object_or_error",
             "get_validation_error",
         ]
-    )
-except ImportError:
-    pass
-
-
-try:
-    from .grpc.servicers import GrpcMetaclass, register_servicer_command  # NOQA
-    from .grpc.unittest import FakeChannel, FakeContext, FakeRpcError, FakeServer  # NOQA
-
-    __all__.extend(
-        ["FakeChannel", "FakeContext", "FakeRpcError", "FakeServer", "GrpcMetaclass", "register_servicer_command"]
     )
 except ImportError:
     pass

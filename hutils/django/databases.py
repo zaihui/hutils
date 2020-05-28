@@ -9,7 +9,7 @@ from django.db.models import Case, FilteredRelation, IntegerField, Q, Sum, When
 import hutils
 
 
-class DynamicField(object):
+class DynamicField:
     """ 动态域，伪 JSONField。a replacement for JSONField.
 
     Examples::
@@ -93,7 +93,7 @@ class DynamicField(object):
         )
 
 
-class ModelMixin(object):
+class ModelMixin:
     """ 集合了一些 Model 的方法。collects some model helper methods.
 
     Examples::
@@ -105,7 +105,6 @@ class ModelMixin(object):
         User.modify(name='kevin')
     """
 
-    # noinspection PyUnresolvedReferences
     def modify(self, extra_updates=(), refresh=False, **fields):
         """ 只修改指定域。specify fields to update.
 
@@ -129,6 +128,10 @@ class ModelMixin(object):
         """
         fields = {field: models.F(field) + amount for field, amount in fields.items()}
         self.modify(extra_updates=extra_updates, refresh=True, **fields)
+
+    def __str__(self):
+        """ 返回一个 ID，方便查看 """
+        return str(self.pk)
 
 
 class QuerySetMixin:
@@ -218,3 +221,31 @@ class HManager(models.Manager, QuerySetMixin):
 
     def get_queryset(self):
         return HQuerySet(self.model, using=self._db, hints=self._hints)
+
+
+class ExtendModelMixin(ModelMixin):
+    """ 拓展表，加上增改删的三个时间 """
+
+    class DeactivatedManager(HManager):
+        def get_queryset(self):
+            return super(ExtendModelMixin.DeactivatedManager, self).get_queryset().filter(deactivated_at__isnull=True)
+
+    class Meta:
+        abstract = True
+
+    created_at = models.DateTimeField(auto_now_add=True, help_text="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, help_text="更新时间")
+    deactivated_at = models.DateTimeField(default=None, null=True, help_text="失效时间")
+    objects = DeactivatedManager()
+    all_objects = HManager()
+
+    @property
+    def is_deactivated(self) -> bool:
+        """ 标记软删的快捷方式 """
+        return self.deactivated_at is not None
+
+    def modify(self, *, extra_updates=(), refresh=False, **fields):
+        """ 每次都更新一下 updated_at """
+        if "updated_at" not in extra_updates:
+            extra_updates = ("updated_at", *extra_updates)
+        return super(ExtendModelMixin, self).modify(extra_updates=extra_updates, refresh=refresh, **fields)
