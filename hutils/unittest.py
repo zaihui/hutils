@@ -144,29 +144,21 @@ class TestCaseMixin:
     For details, see <tests.test_unittest.FuncTestCaseAPITests>
     """
 
-    is_grpc = False
-
     def ok(self, response, *, is_201=False, is_204=False, **kwargs):
         """ shortcuts to response 20X """
-        if self.is_grpc:
-            self.assertEqual(0, response.status, "status should be success(0)")
-        else:
-            expected = (is_201 and HTTPStatus.CREATED) or (is_204 and HTTPStatus.NO_CONTENT) or HTTPStatus.OK
-            self.assertEqual(
-                expected,
-                response.status_code,
-                "status code should be {}: {}".format(expected, getattr(response, "data", "")),
-            )
+        expected = (is_201 and HTTPStatus.CREATED) or (is_204 and HTTPStatus.NO_CONTENT) or HTTPStatus.OK
+        self.assertEqual(
+            expected,
+            response.status_code,
+            "status code should be {}: {}".format(expected, getattr(response, "data", "")),
+        )
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self
 
     def bad_request(self, response, **kwargs):
         """ shortcuts to response 400 """
-        if self.is_grpc:
-            self.assertEqual(4, response.status, "status should be bad_request(4)")
-        else:
-            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code, "status code should be 400")
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code, "status code should be 400")
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self

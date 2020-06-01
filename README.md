@@ -7,7 +7,7 @@
 本项目为我司 [@zaihui](https://github.com/zaihui) 在后端开发中，
 积攒的比较好用的各类基类函数。
 除了基础的类型变换，
-还有 django/~~grpc~~ 相关的一系列功能。
+还有 django 相关的一系列功能。
 
 让我们简单看一段用上了 hutils 以后的效果：
 

@@ -27,8 +27,8 @@ class DecoratorTests(unittest.TestCase):
         def value_error():
             raise ValueError()
 
-        mute_value_error = hutils.mutes(ValueError)(value_error)
-        mute_value_error()
+        mute_value_error = hutils.mutes(ValueError, returns=42)(value_error)
+        self.assertEqual(42, mute_value_error())
 
         with hutils.mutes(ValueError):
             value_error()

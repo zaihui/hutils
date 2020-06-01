@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import contextlib
+import functools as fn
 from typing import Callable, Union
 
 from hutils.shortcuts import log_error
@@ -29,8 +30,7 @@ def catches(*exceptions, raises: Union[BaseException, Callable[[Exception], Base
         raise raises from ex
 
 
-@contextlib.contextmanager
-def mutes(*exceptions, returns=None, logger=None):
+class mutes:
     """ 出错时保持沉默，返回普通值。mute exception
 
     Examples::
@@ -40,11 +40,27 @@ def mutes(*exceptions, returns=None, logger=None):
             return a + b
     """
 
-    exceptions = exceptions or (Exception,)
+    def __init__(self, *exceptions, returns=None, logger=None):
+        self.exceptions = exceptions or (Exception,)
+        self.returns = returns
+        self.logger = logger
 
-    try:
-        yield
-    except exceptions as ex:
-        if logger:
-            log_error(logger, ex)
-        return returns
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if any([exc for exc in self.exceptions if isinstance(exc_val, exc)]):
+            if self.logger:
+                log_error(self.logger, exc_val)
+            return True
+        return False
+
+    def __call__(self, func):
+        @fn.wraps(func)
+        def wrapper(*args, **kwargs):
+            value = self.returns
+            with self:
+                value = func(*args, **kwargs)
+            return value
+
+        return wrapper
