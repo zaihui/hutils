@@ -7,7 +7,6 @@ name = "aliyun"
 
 [dev-packages]
 black = "==19.10b0"
-bump2version = ">=1.0.0"
 django = ">=2.2.12"
 djangorestframework = ">=3.11.0"
 flake8 = ">=3.5.0"
@@ -15,6 +14,7 @@ pipenv = ">=2018.11.26"
 pymongo = ">=3.4.0"
 pytest = ">=5.4.0"
 twine = "*"
+wheel = "*"
 
 [requires]
 python_version = "3"
