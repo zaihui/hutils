@@ -31,7 +31,7 @@ jobs:
           pipenv sync --dev
           pipenv run pytest
 
-          pipenv run flake8 hutils *.py
+          pipenv run flake8 hutils tests setup.py
 
       - name: Check code style
         if: matrix.python-version == 3.7
