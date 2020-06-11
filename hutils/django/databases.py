@@ -189,6 +189,14 @@ class QuerySetMixin:
                 queryset = queryset.filter(**{condition: data[key]})
         return queryset
 
+    def exclude_if_in(self, data: dict, **fields: str) -> "HQuerySet":
+        """ `filter_if_in` 的反操作 """
+        queryset = self._queryset
+        for condition, key in fields.items():
+            if key in data:
+                queryset = queryset.exclude(**{condition: data[key]})
+        return queryset
+
     def annotate_sum(self, key: str, **queries):
         """ 实现 Sum/Case/When 的一套快捷方式
 
