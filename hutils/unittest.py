@@ -4,7 +4,7 @@ import os
 import socket
 import time
 from collections.abc import Callable
-from http import HTTPStatus
+from http import HTTPStatus, client
 from unittest import mock
 
 from hutils.shortcuts import str_to_datetime
@@ -26,11 +26,16 @@ def disable_migration():
 def disable_network():
     """ Disable network """
 
-    def error(*args, **kwargs):
-        raise Exception("Network through socket is disabled!")
+    class DisableNetwork:
+        def __init__(self, *args, **kwargs):
+            raise Exception("Network through socket is disabled!")
+
+        def __call__(self, *args, **kwargs):
+            raise Exception("Network through socket is disabled!")
 
     real_socket = socket.socket
-    socket.socket = error
+    client.HTTPConnection = DisableNetwork
+    socket.socket = DisableNetwork
     patcher = mock.patch("asyncio.selector_events.socket.socket", real_socket)
     patcher.start()
 
