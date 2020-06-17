@@ -26,15 +26,11 @@ def disable_migration():
 def disable_network():
     """ Disable network """
 
-    class DisableNetwork:
-        def __init__(self, *args, **kwargs):
-            raise Exception("Network through socket is disabled!")
-
-        def __call__(self, *args, **kwargs):
-            raise Exception("Network through socket is disabled!")
+    def error(*args, **kwargs):
+        raise Exception("Network through socket is disabled!")
 
     real_socket = socket.socket
-    socket.socket = DisableNetwork
+    socket.socket = error
     patcher = mock.patch("asyncio.selector_events.socket.socket", real_socket)
     patcher.start()
 
