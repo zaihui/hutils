@@ -35,6 +35,13 @@ def disable_network():
 
     real_socket = socket.socket
     client.HTTPConnection = DisableNetwork
+    try:
+        from urllib3 import connection
+
+        connection.HTTPConnection = DisableNetwork
+    except ImportError:
+        pass
+
     socket.socket = DisableNetwork
     patcher = mock.patch("asyncio.selector_events.socket.socket", real_socket)
     patcher.start()
