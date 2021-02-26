@@ -5,7 +5,7 @@ from __future__ import absolute_import, unicode_literals
 
 import contextlib
 import enum
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from hutils.shortcuts import list_get
 
