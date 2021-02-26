@@ -66,7 +66,7 @@ class TupleEnum(enum.Enum):
     @classmethod
     def value_member(cls) -> Dict:
         return {_.value: _.chinese for _ in cls}
-    
+
     @classmethod
     def values(cls) -> Tuple:
         return tuple(_.value for _ in cls)
