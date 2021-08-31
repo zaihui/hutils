@@ -10,7 +10,7 @@ import hutils
 
 
 class DynamicField:
-    """ 动态域，伪 JSONField。a replacement for JSONField.
+    """动态域，伪 JSONField。a replacement for JSONField.
 
     Examples::
 
@@ -35,7 +35,7 @@ class DynamicField:
         self._memory_data = json.loads(self._field_value)
 
     def _set_model_field(self):
-        """ set model's json field value """
+        """set model's json field value"""
         self._field_value = hutils.format_json(self._memory_data)
         setattr(self._model, self._field, self._field_value)
 
@@ -94,7 +94,7 @@ class DynamicField:
 
 
 class ModelMixin:
-    """ 集合了一些 Model 的方法。collects some model helper methods.
+    """集合了一些 Model 的方法。collects some model helper methods.
 
     Examples::
 
@@ -106,7 +106,7 @@ class ModelMixin:
     """
 
     def modify(self, extra_updates=(), refresh=False, **fields):
-        """ 只修改指定域。specify fields to update.
+        """只修改指定域。specify fields to update.
 
         Examples::
 
@@ -120,7 +120,7 @@ class ModelMixin:
             self.refresh_from_db(fields=update_fields)
 
     def increase(self, extra_updates=(), **fields):
-        """ 利用 F() 来修改指定域。increase fields value using F().
+        """利用 F() 来修改指定域。increase fields value using F().
 
         Examples::
 
@@ -130,15 +130,15 @@ class ModelMixin:
         self.modify(extra_updates=extra_updates, refresh=True, **fields)
 
     def __str__(self):
-        """ 返回一个 ID，方便查看 """
+        """返回一个 ID，方便查看"""
         return str(self.pk)
 
 
 class QuerySetMixin:
-    """ 减少代码重复，一个地方写，两个地方用 :) """
+    """减少代码重复，一个地方写，两个地方用 :)"""
 
     def filter_related(self, name: str, *, include_all=False, **conditions) -> "HQuerySet":
-        """ 利用 FilteredRelation 优化 Query 的方法
+        """利用 FilteredRelation 优化 Query 的方法
         官方文档参见: https://docs.djangoproject.com/en/2.1/ref/models/querysets/#filteredrelation-objects
 
         还有一种写法是 Manager.from_queryset, 不过那样就没有 Pycharm Django 的补全和提示了，很不好
@@ -167,7 +167,7 @@ class QuerySetMixin:
         )
 
     def filter_if_in(self, data: dict, **fields: str) -> "HQuerySet":
-        """ 根据传不传值决定要不要筛选的方法
+        """根据传不传值决定要不要筛选的方法
 
         Examples::
 
@@ -190,7 +190,7 @@ class QuerySetMixin:
         return queryset
 
     def exclude_if_in(self, data: dict, **fields: str) -> "HQuerySet":
-        """ `filter_if_in` 的反操作 """
+        """`filter_if_in` 的反操作"""
         queryset = self._queryset
         for condition, key in fields.items():
             if key in data:
@@ -198,7 +198,7 @@ class QuerySetMixin:
         return queryset
 
     def annotate_sum(self, key: str, **queries):
-        """ 实现 Sum/Case/When 的一套快捷方式
+        """实现 Sum/Case/When 的一套快捷方式
 
         Examples::
 
@@ -221,18 +221,18 @@ class QuerySetMixin:
 
 
 class HQuerySet(models.QuerySet, QuerySetMixin):
-    """ HUtils Query Set """
+    """HUtils Query Set"""
 
 
 class HManager(models.Manager, QuerySetMixin):
-    """ HUtils Manager """
+    """HUtils Manager"""
 
     def get_queryset(self):
         return HQuerySet(self.model, using=self._db, hints=self._hints)
 
 
 class ExtendModelMixin(ModelMixin):
-    """ 拓展表，加上增改删的三个时间 """
+    """拓展表，加上增改删的三个时间"""
 
     class DeactivatedManager(HManager):
         def get_queryset(self):
@@ -249,11 +249,11 @@ class ExtendModelMixin(ModelMixin):
 
     @property
     def is_deactivated(self) -> bool:
-        """ 标记软删的快捷方式 """
+        """标记软删的快捷方式"""
         return self.deactivated_at is not None
 
     def modify(self, *, extra_updates=(), refresh=False, **fields):
-        """ 每次都更新一下 updated_at """
+        """每次都更新一下 updated_at"""
         if "updated_at" not in extra_updates:
             extra_updates = ("updated_at", *extra_updates)
         return super(ExtendModelMixin, self).modify(extra_updates=extra_updates, refresh=refresh, **fields)

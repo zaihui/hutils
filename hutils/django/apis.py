@@ -11,7 +11,7 @@ from hutils import list_get, log_error
 
 
 def get_validation_error(message, data=None, code=None):
-    """ 方便快捷抛 400 的函数。shortcut for raising bad request error in django-rest-framework.
+    """方便快捷抛 400 的函数。shortcut for raising bad request error in django-rest-framework.
 
     Examples::
 
@@ -35,7 +35,7 @@ def get_validation_error(message, data=None, code=None):
 
 
 def check_error(error, *args, error_method=get_validation_error, **kwargs):
-    """ 检查错误，有错抛错，没错继续。check errors or raise error
+    """检查错误，有错抛错，没错继续。check errors or raise error
 
     Examples::
 
@@ -48,7 +48,7 @@ def check_error(error, *args, error_method=get_validation_error, **kwargs):
 def get_object_or_error(
     cls, *queries, _select_models=(), _prefetch_models=(), _err_msg=None, _err_func=get_validation_error, **kwargs
 ):
-    """ 类似 get_object_or_404。similar to get_object_or_404.
+    """类似 get_object_or_404。similar to get_object_or_404.
 
     Examples::
         user = get_object_or_error(User, uid=uid)
@@ -81,7 +81,7 @@ def get_object_or_error(
 
 
 class Errors(enum.Enum):
-    """ 错误类 """
+    """错误类"""
 
     def __new__(cls, value, *args):
         obj = object.__new__(cls)
@@ -99,7 +99,7 @@ class Errors(enum.Enum):
 
     @classmethod
     def lazy_error(cls, ex: Exception):
-        """ 一般这里都是后端懒的搞，直接 except Exception 转前端报错。一般不推荐，所以在这种情况都统统打 sentry, 一定要处理 """
+        """一般这里都是后端懒的搞，直接 except Exception 转前端报错。一般不推荐，所以在这种情况都统统打 sentry, 一定要处理"""
         log_error(__name__, ex)
         return get_validation_error(str(ex))
 

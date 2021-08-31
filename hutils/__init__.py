@@ -18,7 +18,7 @@ from .shortcuts import (
     tomorrow,
     yesterday,
 )
-from .unittest import TestCaseMixin, disable_elastic_apm, disable_migration, disable_network, fake_time
+from .unittest import TestCaseMixin, disable_elastic_apm, disable_migration, disable_network, fake_time, mock_redis_lock
 from .validators import is_chinese_phone, is_int, is_phone, is_singapore_phone, is_uuid
 
 __version__ = "1.0.14"
@@ -53,6 +53,7 @@ __all__ = [
     "log_error",
     "merge_dicts",
     "mock_lambda",
+    "mock_redis_lock",
     "mutes",
     "normalize",
     "quantize",
@@ -63,7 +64,7 @@ __all__ = [
 ]
 
 try:
-    from .django.apis import Errors, check_error, get_validation_error, get_object_or_error  # NOQA
+    from .django.apis import Errors, check_error, get_object_or_error, get_validation_error  # NOQA
     from .django.databases import DynamicField, ExtendModelMixin, HManager, HQuerySet, ModelMixin  # NOQA
     from .django.migrations import AlterDefault  # NOQA
     from .django.unittest import extend_django_sqlite  # NOQA

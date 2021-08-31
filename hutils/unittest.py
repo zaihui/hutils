@@ -11,7 +11,7 @@ from hutils.shortcuts import str_to_datetime
 
 
 def disable_migration():
-    """ get disable migration """
+    """get disable migration"""
 
     class DisableMigration:
         def __contains__(self, item):
@@ -24,7 +24,7 @@ def disable_migration():
 
 
 def disable_network():
-    """ Disable network """
+    """Disable network"""
 
     class DisableNetwork:
         def __init__(self, *args, **kwargs):
@@ -50,13 +50,57 @@ def disable_network():
 
 
 def disable_elastic_apm():
-    """ disable elastic apm """
+    """disable elastic apm"""
     os.environ["ELASTIC_APM_DISABLE_SEND"] = "true"
     os.environ["ELASTIC_APM_CENTRAL_CONFIG"] = "false"
 
 
+def mock_redis_lock():
+    """Mock redis lock, and get rid of `lupa`"""
+
+    def register_scripts(self):
+        def mock_reacquire(*_, keys: list, args: list, client):
+            token = client.get(keys[0])
+            if not token or token != args[0]:
+                return False
+            client.pexpire(keys[0], args[1])
+            return True
+
+        def mock_extend(*_, keys: list, args: list, client):
+            token = client.get(keys[0])
+            if not token or token != args[0]:
+                return False
+            expiration = client.pttl(keys[0])
+            if not expiration:
+                expiration = 0
+            if expiration < 0:
+                return False
+            new_ttl = args[1]
+            if args[2] == "0":
+                new_ttl += expiration
+            client.pexpire(keys[0], new_ttl)
+            return True
+
+        def mock_release(*_, keys: list, args: list, client):
+            if client.get(keys[0]) != args[0]:
+                return False
+            client.delete(keys[0])
+            return True
+
+        cls = self.__class__
+        if cls.lua_release is None:
+            cls.lua_release = mock_release
+        if cls.lua_extend is None:
+            cls.lua_extend = mock_extend
+        if cls.lua_reacquire is None:
+            cls.lua_reacquire = mock_reacquire
+
+    patcher = mock.patch("redis.lock.Lock.register_scripts", register_scripts)
+    return patcher
+
+
 class MockDateTime(datetime.datetime):
-    """ class for mocking datetime.datetime """
+    """class for mocking datetime.datetime"""
 
     @classmethod
     def now(cls, tz=None):
@@ -70,7 +114,7 @@ class MockDateTime(datetime.datetime):
 
 
 class Mogician:
-    """ class for mocking any time """
+    """class for mocking any time"""
 
     @staticmethod
     def mock_field_default(field):
@@ -118,7 +162,7 @@ class Mogician:
 
 @contextlib.contextmanager
 def fake_time(fake_to):
-    """ short cut for mocking time or datetime, supports django.
+    """short cut for mocking time or datetime, supports django.
 
     Examples::
 
@@ -153,7 +197,7 @@ class TestCaseMixin:
     """
 
     def ok(self, response, *, is_201=False, is_204=False, **kwargs):
-        """ shortcuts to response 20X """
+        """shortcuts to response 20X"""
         expected = (is_201 and HTTPStatus.CREATED) or (is_204 and HTTPStatus.NO_CONTENT) or HTTPStatus.OK
         self.assertEqual(
             expected,
@@ -165,26 +209,26 @@ class TestCaseMixin:
         return self
 
     def bad_request(self, response, **kwargs):
-        """ shortcuts to response 400 """
+        """shortcuts to response 400"""
         self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code, "status code should be 400")
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self
 
     def not_found(self, response):
-        """ shortcuts to response 404 """
+        """shortcuts to response 404"""
         self.assertEqual(HTTPStatus.NOT_FOUND, response.status_code)
         return self
 
     def forbidden(self, response, **kwargs):
-        """ shortcuts to response 403 """
+        """shortcuts to response 403"""
         self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code, "status code should be 403")
         if kwargs:
             self.assert_same(response.data, **kwargs)
         return self
 
     def assert_increases(self, delta: int, func: Callable, name=""):
-        """ shortcuts to verify func change is equal to delta """
+        """shortcuts to verify func change is equal to delta"""
         test_case = self
 
         class Detector:
@@ -203,7 +247,7 @@ class TestCaseMixin:
         return Detector()
 
     def assert_model_increases(self, *models, delta: int = 1, **lookups):
-        """ shortcuts to verify value change """
+        """shortcuts to verify value change"""
         stack = contextlib.ExitStack()
         for case in models:
             if isinstance(case, tuple):
@@ -214,10 +258,10 @@ class TestCaseMixin:
         return stack
 
     def assert_same(self, data, **expects):
-        """ shortcuts to compare value (support nested dictionaries, lists and array length) """
+        """shortcuts to compare value (support nested dictionaries, lists and array length)"""
 
         def _get_key(_data, _key: str):
-            """ get the expanded value """
+            """get the expanded value"""
             _value = _data
             for part in _key.split("__"):
                 if part == "length":
@@ -254,7 +298,7 @@ class TestCaseMixin:
         return self
 
     def assert_data(self, expected_data, actual_data):
-        """ shortcuts to compare data (expected_data can be subset of actual_data) """
+        """shortcuts to compare data (expected_data can be subset of actual_data)"""
 
         if isinstance(expected_data, list):
             data = list(actual_data)

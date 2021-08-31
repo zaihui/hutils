@@ -11,7 +11,7 @@ from typing import Iterable, Optional, Tuple
 def datetime_combine(
     start_date: datetime.date, end_date: datetime.date = None, delta_days: Optional[int] = None
 ) -> Tuple[datetime.datetime, datetime.datetime]:
-    """ 获取一段日期的起止时间。get start/end datetime from date.
+    """获取一段日期的起止时间。get start/end datetime from date.
 
     Examples::
 
@@ -33,7 +33,7 @@ def datetime_combine(
 
 
 def datetime_to_str(value, fmt="%Y-%m-%d %H:%M:%S"):
-    """ 时间类型转换为字符串。datetime to string.
+    """时间类型转换为字符串。datetime to string.
 
     :type value: datetime.datetime
     :type fmt: str
@@ -43,7 +43,7 @@ def datetime_to_str(value, fmt="%Y-%m-%d %H:%M:%S"):
 
 
 def date_to_str(value, fmt="%Y-%m-%d"):
-    """ 日期类型转换为字符串。date to string.
+    """日期类型转换为字符串。date to string.
 
     :type value: datetime.date
     :type fmt: str
@@ -53,7 +53,7 @@ def date_to_str(value, fmt="%Y-%m-%d"):
 
 
 def get_uid(instance):
-    """ 获取实例的 uid (hex). get hex uid from instance.
+    """获取实例的 uid (hex). get hex uid from instance.
 
     Examples::
 
@@ -73,12 +73,12 @@ def get_uid(instance):
 
 
 def identity(value):
-    """ 直接返回值, 常用于函数式编程中. identity, used in functional programming mostly. """
+    """直接返回值, 常用于函数式编程中. identity, used in functional programming mostly."""
     return value
 
 
 def list_first(instances: Iterable, default=None):
-    """ 获取列表的第一个元素，假如没有第一个元素则返回默认值。get first value of a list or default value.
+    """获取列表的第一个元素，假如没有第一个元素则返回默认值。get first value of a list or default value.
 
     Examples::
 
@@ -89,7 +89,7 @@ def list_first(instances: Iterable, default=None):
 
 
 def list_get(instances: Iterable, index: int, default=None):
-    """ 根据索引号获取列表值或者默认值。get default value on index out of range for list.
+    """根据索引号获取列表值或者默认值。get default value on index out of range for list.
 
     Examples::
 
@@ -103,7 +103,7 @@ def list_get(instances: Iterable, index: int, default=None):
 
 
 def mock_lambda(return_value=None, raises: Exception = None, **kwargs):
-    """ 伪造返回数据的快捷函数。convenient method to mock return value.
+    """伪造返回数据的快捷函数。convenient method to mock return value.
 
     Examples::
 
@@ -124,7 +124,7 @@ def mock_lambda(return_value=None, raises: Exception = None, **kwargs):
 
 
 def log_error(logger, message, *args, exc_info=True, **kwargs):
-    """ 记录错误日志的快捷方式，顺带支持 Sentry。log error, supports sentry detail trace.
+    """记录错误日志的快捷方式，顺带支持 Sentry。log error, supports sentry detail trace.
 
     Examples::
 
@@ -141,7 +141,7 @@ def log_error(logger, message, *args, exc_info=True, **kwargs):
 
 
 def str_to_datetime(value, fmt="%Y-%m-%d %H:%M:%S"):
-    """ 时间类型转换为字符串。datetime to string.
+    """时间类型转换为字符串。datetime to string.
 
     :type value: str
     :type fmt: str
@@ -151,7 +151,7 @@ def str_to_datetime(value, fmt="%Y-%m-%d %H:%M:%S"):
 
 
 def str_to_date(value, fmt="%Y-%m-%d"):
-    """ 日期类型转换为字符串。date to string.
+    """日期类型转换为字符串。date to string.
 
     :type value: str
     :type fmt: str
@@ -161,10 +161,10 @@ def str_to_date(value, fmt="%Y-%m-%d"):
 
 
 def tomorrow() -> datetime.datetime:
-    """ 获取昨天的时间 """
+    """获取昨天的时间"""
     return datetime.datetime.now() + datetime.timedelta(days=1)
 
 
 def yesterday() -> datetime.datetime:
-    """ 获取昨天的时间 """
+    """获取昨天的时间"""
     return datetime.datetime.now() - datetime.timedelta(days=1)

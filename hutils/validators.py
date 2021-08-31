@@ -9,7 +9,7 @@ SINGAPORE_PHONE_REGEX = re.compile(r"^[8|9]\d{7}$")
 
 
 def is_uuid(string):
-    """ 检查字符串是不是合法的 UUID。validate if string is a valid uuid.
+    """检查字符串是不是合法的 UUID。validate if string is a valid uuid.
 
     Examples::
 
@@ -24,7 +24,7 @@ def is_uuid(string):
 
 
 def is_int(string):
-    """ 检查字符串是不是合法的 int. validate if string is a valid int.
+    """检查字符串是不是合法的 int. validate if string is a valid int.
 
     Examples::
 
@@ -40,7 +40,7 @@ def is_int(string):
 
 
 def is_chinese_phone(string):
-    """ 检查字符串是不是合法的大陆手机号。validate if string is a valid chinese mainland phone number.
+    """检查字符串是不是合法的大陆手机号。validate if string is a valid chinese mainland phone number.
 
     Examples::
 
@@ -52,7 +52,7 @@ def is_chinese_phone(string):
 
 
 def is_singapore_phone(string):
-    """ 检查字符串是不是合法的新加坡手机号。validate if string is a valid singapore phone number.
+    """检查字符串是不是合法的新加坡手机号。validate if string is a valid singapore phone number.
 
     Examples::
 
@@ -64,7 +64,7 @@ def is_singapore_phone(string):
 
 
 def is_phone(string):
-    """ 检查字符串是不是合法的手机号 validate if string is a valid phone number.
+    """检查字符串是不是合法的手机号 validate if string is a valid phone number.
 
     Examples::
 

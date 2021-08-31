@@ -5,7 +5,7 @@ from django.db.models import NOT_PROVIDED
 
 
 class AlterDefault(Operation):
-    """ AlterDefault value to database. (which will persist default value to database layer)
+    """AlterDefault value to database. (which will persist default value to database layer)
 
     Examples::
 
@@ -32,7 +32,7 @@ class AlterDefault(Operation):
         )
 
     def state_forwards(self, app_label, state):
-        """ do nothing for Django State """
+        """do nothing for Django State"""
 
     def database_forwards(self, app_label, schema_editor: BaseDatabaseSchemaEditor, from_state, to_state: ProjectState):
         to_model = to_state.apps.get_model(app_label, self.model_name)

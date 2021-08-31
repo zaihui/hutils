@@ -8,7 +8,7 @@ from hutils.shortcuts import log_error
 
 @contextlib.contextmanager
 def catches(*exceptions, raises: Union[BaseException, Callable[[Exception], BaseException]], logger=None):
-    """ 封装转换错误类。transfer exceptions to a different type.
+    """封装转换错误类。transfer exceptions to a different type.
 
     Examples::
 
@@ -31,7 +31,7 @@ def catches(*exceptions, raises: Union[BaseException, Callable[[Exception], Base
 
 
 class mutes:
-    """ 出错时保持沉默，返回普通值。mute exception
+    """出错时保持沉默，返回普通值。mute exception
 
     Examples::
 

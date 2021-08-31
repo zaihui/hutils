@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 
 def extend_django_sqlite():
-    """ 给 django sqlite 补上一些基础函数 """
+    """给 django sqlite 补上一些基础函数"""
 
     def float_max(value_x, value_y):
         return float(max(float(value_x), float(value_y)))

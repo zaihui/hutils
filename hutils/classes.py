@@ -11,21 +11,21 @@ from hutils.shortcuts import list_get
 
 
 class EmptyContextManager(contextlib.ContextDecorator):
-    """ empty context manager. """
+    """empty context manager."""
 
     def __init__(self):
-        """ do nothing """
+        """do nothing"""
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """ Always throw exception """
+        """Always throw exception"""
         return False
 
 
 class TupleEnum(enum.Enum):
-    """ 元组枚举类，可以用来存储多层信息。tuple enum for multi-dimension data enum.
+    """元组枚举类，可以用来存储多层信息。tuple enum for multi-dimension data enum.
 
     Examples::
 
@@ -56,7 +56,7 @@ class TupleEnum(enum.Enum):
 
     @property
     def lower_name(self):
-        """ name in lower case """
+        """name in lower case"""
         return self.name.lower()
 
     @classmethod

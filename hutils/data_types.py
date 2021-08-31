@@ -8,14 +8,14 @@ import decimal
 import json
 
 try:
-    import pymongo  # NOQA
     import bson
+    import pymongo  # NOQA
 except ImportError:
     bson = False
 
 
 def bytes_to_str(data):
-    """ 二进制类型转换为字符串，支持嵌套数组。bytes to string, supports nested list.
+    """二进制类型转换为字符串，支持嵌套数组。bytes to string, supports nested list.
 
     Examples::
 
@@ -32,7 +32,7 @@ def bytes_to_str(data):
 
 
 class JSONEncoder(json.JSONEncoder):
-    """ 序列化 JSON """
+    """序列化 JSON"""
 
     def default(self, o):
         if isinstance(o, decimal.Decimal):
@@ -47,7 +47,7 @@ class JSONEncoder(json.JSONEncoder):
 
 
 def format_json(data, ensure_ascii=False, **kwargs):
-    """ 序列化 JSON，支持中文和 datetime, decimal 类型。format json with utf8/datetime/decimal support.
+    """序列化 JSON，支持中文和 datetime, decimal 类型。format json with utf8/datetime/decimal support.
 
     Examples::
 
@@ -62,7 +62,7 @@ def format_json(data, ensure_ascii=False, **kwargs):
 
 
 def get_data(data, *keys, optional=False):
-    """ 从字典数据类型中批量获取变量。get list data from dict.
+    """从字典数据类型中批量获取变量。get list data from dict.
 
     Examples::
 
@@ -78,7 +78,7 @@ def get_data(data, *keys, optional=False):
 
 
 def merge_dicts(*dicts: dict) -> dict:
-    """ 依次合并多个字典。merge multiple dict one by one.
+    """依次合并多个字典。merge multiple dict one by one.
 
     Examples::
 
@@ -93,7 +93,7 @@ def merge_dicts(*dicts: dict) -> dict:
 
 
 def normalize(value):
-    """ 将一个数右边的零给干掉。remove trailing zeros from number.
+    """将一个数右边的零给干掉。remove trailing zeros from number.
 
     Examples::
 
@@ -111,7 +111,7 @@ def normalize(value):
 
 
 def quantize(value, rounding=decimal.ROUND_HALF_UP):
-    """ 强制转换为两位小数类型。quantize value to two digits decimal.
+    """强制转换为两位小数类型。quantize value to two digits decimal.
 
     Examples::
 
