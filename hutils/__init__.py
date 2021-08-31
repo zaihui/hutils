@@ -21,7 +21,7 @@ from .shortcuts import (
 from .unittest import TestCaseMixin, disable_elastic_apm, disable_migration, disable_network, fake_time, mock_redis_lock
 from .validators import is_chinese_phone, is_int, is_phone, is_singapore_phone, is_uuid
 
-__version__ = "1.0.14"
+__version__ = "1.0.15"
 
 __all__ = [
     "EmptyContextManager",
