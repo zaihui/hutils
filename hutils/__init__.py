@@ -64,7 +64,7 @@ __all__ = [
 ]
 
 try:
-    from .django.apis import Errors, check_error, get_object_or_error, get_validation_error  # NOQA
+    from .django.apis import Errors, check_error, get_object_or_error, get_request_ip, get_validation_error  # NOQA
     from .django.databases import DynamicField, ExtendModelMixin, HManager, HQuerySet, ModelMixin  # NOQA
     from .django.migrations import AlterDefault  # NOQA
     from .django.unittest import extend_django_sqlite  # NOQA
@@ -81,6 +81,7 @@ try:
             "check_error",
             "extend_django_sqlite",
             "get_object_or_error",
+            "get_request_ip",
             "get_validation_error",
         ]
     )

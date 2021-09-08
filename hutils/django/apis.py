@@ -45,6 +45,22 @@ def check_error(error, *args, error_method=get_validation_error, **kwargs):
         raise error_method(*args, **kwargs)
 
 
+def get_request_ip(request):
+    """从请求中获取 IP。get django request ip
+    Copy cat from https://stackoverflow.com/questions/4581789/
+
+    :rtype: Optional[str]
+    """
+    if not request:
+        return None
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        client_ip = x_forwarded_for.split(",", 1)[0]
+    else:
+        client_ip = request.META.get("REMOTE_ADDR")
+    return client_ip
+
+
 def get_object_or_error(
     cls, *queries, _select_models=(), _prefetch_models=(), _err_msg=None, _err_func=get_validation_error, **kwargs
 ):
