@@ -51,6 +51,7 @@ def disable_network():
 
 def disable_elastic_apm():
     """disable elastic apm"""
+    os.environ["ELASTIC_APM_ENABLED"] = "false"
     os.environ["ELASTIC_APM_DISABLE_SEND"] = "true"
     os.environ["ELASTIC_APM_CENTRAL_CONFIG"] = "false"
 
@@ -118,7 +119,7 @@ class Mogician:
 
     @staticmethod
     def mock_field_default(field):
-        from django.db import DefaultConnectionProxy
+        from django.db import connection
 
         if field.has_default():
             if callable(field.default):
@@ -127,7 +128,7 @@ class Mogician:
                 return field.default()
             return field.default
         if not field.empty_strings_allowed or (
-            field.null and not DefaultConnectionProxy().features.interprets_empty_strings_as_nulls
+            field.null and not connection.features.interprets_empty_strings_as_nulls
         ):
             return None
         return ""
