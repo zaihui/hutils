@@ -273,7 +273,10 @@ class TestCaseMixin:
                     try:
                         _value = _value[int(part[1:])]
                     except ValueError:
-                        _value = getattr(_value, part[1:])
+                        try:
+                            _value = getattr(_value, part[1:])
+                        except AttributeError:
+                            _value = _value[part[1:]]
                 else:
                     try:
                         _value = _value[int(part)]
