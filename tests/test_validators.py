@@ -34,3 +34,34 @@ class ValidatorsTests(unittest.TestCase):
         self.assertTrue(hutils.is_phone("91234567"))
         self.assertTrue(hutils.is_phone("17600001234"))
         self.assertFalse(hutils.is_phone("+85212345678"))
+
+    def test_telephone_success(self):
+        self.assertTrue(hutils.is_telephone("0510-85858999"))
+
+    def test_telephone_success_2(self):
+        telephone = "010-85858909"
+        self.assertTrue(hutils.is_telephone(telephone))
+
+    def test_telephone_too_long(self):
+        telephone = "0511-858589991"
+        self.assertFalse(hutils.is_telephone(telephone))
+
+    def test_telephone_too_long_2(self):
+        telephone = "051-8585899911"
+        self.assertFalse(hutils.is_telephone(telephone))
+
+    def test_telephone_too_long_prefix(self):
+        telephone = "05111-858589991"
+        self.assertFalse(hutils.is_telephone(telephone))
+
+    def test_telephone_too_short_prefix(self):
+        telephone = "01-85858999"
+        self.assertFalse(hutils.is_telephone(telephone))
+
+    def test_telephone_too_short_end(self):
+        telephone = "010-858589"
+        self.assertFalse(hutils.is_telephone(telephone))
+
+    def test_telephone_too_long_end(self):
+        telephone = "010-858589111"
+        self.assertFalse(hutils.is_telephone(telephone))
