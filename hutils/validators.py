@@ -6,6 +6,7 @@ import uuid
 
 CHINESE_PHONE_REGEX = re.compile(r"^1[3-9][0-9]{9}$")
 SINGAPORE_PHONE_REGEX = re.compile(r"^[8|9]\d{7}$")
+CHINESE_TELEPHONE_REGEX = re.compile(r"^\d{3}-\d{7,8}|\d{4}-\d{7,8}$")
 
 
 def is_uuid(string):
@@ -73,3 +74,13 @@ def is_phone(string):
     :rtype: bool
     """
     return any([is_chinese_phone(string), is_singapore_phone(string)])
+
+
+def is_telephone(string):
+    """检查字符串是否是合法的国内座机号 validate if string is a valid chinese telephone number.
+    Examples:
+        if is_telephone('010-868689999'):...
+
+    :rtype: bool
+    """
+    return bool(CHINESE_TELEPHONE_REGEX.match(string)) and CHINESE_TELEPHONE_REGEX.match(string).group() == string
