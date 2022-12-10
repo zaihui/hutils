@@ -151,11 +151,11 @@
         },
         "pipenv": {
             "hashes": [
-                "sha256:05958fadcd70b2de6a27542fcd2bd72dd5c59c6d35307fdac3e06361fb06e30e",
-                "sha256:d180f5be4775c552fd5e69ae18a9d6099d9dafb462efe54f11c72cb5f4d5e977"
+                "sha256:3b80b4512934b9d8e8ce12c988394642ff96bb697680e5b092e59af503178327",
+                "sha256:f84d7119239b22ab2ac2b8fbc7d619d83cf41135206d72a17c4f151cda529fd0"
             ],
             "index": "aliyun",
-            "version": "==2021.5.29"
+            "version": "==2022.1.8"
         },
         "platformdirs": {
             "hashes": [
