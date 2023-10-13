@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # this module provides django database related methods
+import datetime
 import json
 
 from django.db import models
@@ -105,6 +106,8 @@ class ModelMixin:
         User.modify(name='kevin')
     """
 
+    auto_now_fields = ["updated_at", "modified_at"]
+
     def modify(self, extra_updates=(), refresh=False, **fields):
         """只修改指定域。specify fields to update.
 
@@ -114,6 +117,10 @@ class ModelMixin:
         """
         for field, value in fields.items():
             setattr(self, field, value)
+        for field in self.auto_now_fields:
+            if not hasattr(self, field):
+                continue
+            setattr(self, field, datetime.datetime.now())
         update_fields = list(extra_updates) + list(fields.keys())
         self.save(update_fields=update_fields)
         if refresh:
