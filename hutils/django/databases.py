@@ -121,7 +121,7 @@ class ModelMixin:
             if not hasattr(self, field):
                 continue
             setattr(self, field, datetime.datetime.now())
-        update_fields = list(extra_updates) + list(fields.keys())
+        update_fields = list(extra_updates) + list(fields.keys()) + list(self.auto_now_fields)
         self.save(update_fields=update_fields)
         if refresh:
             self.refresh_from_db(fields=update_fields)
