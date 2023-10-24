@@ -117,11 +117,13 @@ class ModelMixin:
         """
         for field, value in fields.items():
             setattr(self, field, value)
+        auto_now_fields = []
         for field in self.auto_now_fields:
             if not hasattr(self, field):
                 continue
+            auto_now_fields.append(field)
             setattr(self, field, datetime.datetime.now())
-        update_fields = list(extra_updates) + list(fields.keys()) + list(self.auto_now_fields)
+        update_fields = list(extra_updates) + list(fields.keys()) + list(auto_now_fields)
         self.save(update_fields=update_fields)
         if refresh:
             self.refresh_from_db(fields=update_fields)
