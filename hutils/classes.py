@@ -10,6 +10,16 @@ from typing import Dict, List, Tuple
 from hutils.shortcuts import list_get
 
 
+class TupleEnumMeta(enum.EnumMeta):
+    """TupleEnum枚举默认返回value"""
+
+    def __getattribute__(cls, name):
+        attr = super().__getattribute__(name)
+        if isinstance(attr, enum.Enum):
+            return attr.value
+        return attr
+
+
 class EmptyContextManager(contextlib.ContextDecorator):
     """empty context manager."""
 
@@ -24,7 +34,7 @@ class EmptyContextManager(contextlib.ContextDecorator):
         return False
 
 
-class TupleEnum(enum.Enum):
+class TupleEnum(enum.Enum, metaclass=TupleEnumMeta):
     """元组枚举类，可以用来存储多层信息。tuple enum for multi-dimension data enum.
 
     Examples::
