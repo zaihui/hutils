@@ -44,6 +44,9 @@ class TupleEnum(enum.Enum):
         obj.obj_values = [value] + list(args)
         return obj
 
+    def __str__(self):
+        return self.value
+
     def get_value_at(self, index, default=None):
         return list_get(self.obj_values, index, default=default)
 
@@ -66,6 +69,10 @@ class TupleEnum(enum.Enum):
     @classmethod
     def chinese_items(cls) -> Dict:
         return dict(cls.chinese_choices())
+
+    @classmethod
+    def member_items(cls) -> Dict:
+        return cls._value2member_map_
 
     @classmethod
     def values(cls) -> Tuple:
